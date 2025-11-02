@@ -1,6 +1,48 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# 🧥 DressUp – Joc OOP în C++
 
-### Folosiți template-ul corespunzător grupei voastre!
+**DressUp** este un mini-joc în C++ bazat pe concepte de programare orientată pe obiecte (OOP).  
+Jucătorul își creează un personaj, îl personalizează și îl echipează cu articole vestimentare dintr-un dulap virtual și un magazin.  
+Jocul pune accent pe gestionarea resurselor, organizarea obiectelor și interacțiunea între clase (`Personaj`, `Dulap`, `Magazin`, `Articol`, `Animal`).
+
+---
+
+## 🎮 Descriere generală
+
+La începutul jocului, jucătorul:
+- Își alege **numele** și **naționalitatea** personajului.
+- Primește un **dulap de bază** cu articole de vară și de iarnă.
+- Poate vizualiza echipamentul actual, împărțit pe sezoane.
+
+Apoi, jucătorul poate merge la **magazin**, unde:
+- Poate consulta lista articolelor disponibile.
+- Poate cumpăra articole noi (dacă are bani și loc în dulap).
+- Poate vedea actualizarea automată a soldului și a valorii dulapului.
+
+Sunt testate și conceptele OOP prin:
+- **Constructori de copiere** și **operatori de atribuire**.
+- O clasă suplimentară, **Animal**, care poate fi asociată personajului.
+
+---
+
+## 🧩 Funcționalități implementate
+
+- Creare și gestionare personaj (`Personaj`)
+- Inventar de articole (`Dulap`) cu verificarea capacității
+- Magazin de articole (`Magazin`) din care se pot face cumpărături
+- Interacțiuni bazate pe bugetul jucătorului
+- Afișare echipament în funcție de sezon
+- Testare principii OOP: constructori, destructori, operator=, liste de obiecte
+
+---
+
+## 🌱 Planuri de dezvoltare
+
+- 👕 **Skin-uri de iarnă și de vară** pentru personaj  
+- ⚔️ **Sistem de duel** între personaje  
+- 🏬 Magazin extins cu articole rare și ediții limitate  
+- 💬 Meniu interactiv (eventual interfață grafică)
+
+---
 
 | Laborant  | Link template                                |
 |-----------|----------------------------------------------|
@@ -28,22 +70,22 @@ O cerință nu se consideră îndeplinită dacă este realizată doar prin cod g
 
 ### Tema 0
 
-- [ ] Nume proiect (poate fi schimbat ulterior)
-- [ ] Scurtă descriere a temei alese, ce v-ați propus să implementați
+- [x] Nume proiect (poate fi schimbat ulterior)
+- [x] Scurtă descriere a temei alese, ce v-ați propus să implementați
 
 ## Tema 1
 
 #### Cerințe
-- [ ] definirea a minim **3-4 clase** folosind compunere cu clasele definite de voi; moștenirile nu se iau în considerare aici
-- [ ] constructori de inițializare cu parametri pentru fiecare clasă
-- [ ] pentru o aceeași (singură) clasă: constructor de copiere, `operator=` de copiere, destructor
-<!-- - [ ] pentru o altă clasă: constructor de mutare, `operator=` de mutare, destructor -->
-<!-- - [ ] pentru o altă clasă: toate cele 5 funcții membru speciale -->
-- [ ] `operator<<` pentru **toate** clasele pentru afișare (`std::ostream`) folosind compunere de apeluri cu `operator<<`
-- [ ] cât mai multe `const` (unde este cazul) și funcții `private`
-- [ ] implementarea a minim 3 funcții membru publice pentru funcționalități netriviale specifice temei alese, dintre care cel puțin 1-2 funcții mai complexe
+- [x] definirea a minim **3-4 clase** folosind compunere cu clasele definite de voi; moștenirile nu se iau în considerare aici
+- [x] constructori de inițializare cu parametri pentru fiecare clasă
+- [x] pentru o aceeași (singură) clasă: constructor de copiere, `operator=` de copiere, destructor
+<!-- - [x] pentru o altă clasă: constructor de mutare, `operator=` de mutare, destructor -->
+<!-- - [x] pentru o altă clasă: toate cele 5 funcții membru speciale -->
+- [x] `operator<<` pentru **toate** clasele pentru afișare (`std::ostream`) folosind compunere de apeluri cu `operator<<`
+- [x] cât mai multe `const` (unde este cazul) și funcții `private`
+- [x] implementarea a minim 3 funcții membru publice pentru funcționalități netriviale specifice temei alese, dintre care cel puțin 1-2 funcții mai complexe
   - nu doar citiri/afișări sau adăugat/șters elemente într-un/dintr-un vector
-- [ ] scenariu de utilizare **cu sens** a claselor definite:
+- [x] scenariu de utilizare **cu sens** a claselor definite:
   - crearea de obiecte și apelarea tuturor funcțiilor membru publice în main
   - vor fi adăugate în fișierul `tastatura.txt` DOAR exemple de date de intrare de la tastatură (dacă există); dacă aveți nevoie de date din fișiere, creați alte fișiere separat
 - [ ] minim 50-55% din codul propriu să fie C++, `.gitattributes` configurat corect
