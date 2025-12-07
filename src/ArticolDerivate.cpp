@@ -9,10 +9,6 @@ void Imbracaminte::AfiseazaImpl(std::ostream &os) const
     os << "[Imbracaminte] " << nume_ << " | Pret: " << pret_
        << " | Culoare: " << culoare_ << " | Sezon: " << sezon_;
 }
-bool Imbracaminte::SePotrivesteLaEveniment(const std::string &eveniment) const
-{
-    return true;
-}
 
 std::unique_ptr<Articol> Imbracaminte::clone() const
 {
@@ -22,6 +18,12 @@ std::unique_ptr<Articol> Imbracaminte::clone() const
 std::string Imbracaminte::Tip() const
 {
     return sezon_;
+}
+
+bool Imbracaminte::SePotrivesteLaEveniment(const std::string &eveniment) const
+{
+    (void)eveniment;
+    return true;
 }
 
 Incaltaminte::Incaltaminte(const std::string &nume, const std::string &culoare, int pret, int marime)
@@ -38,14 +40,15 @@ std::unique_ptr<Articol> Incaltaminte::clone() const
     return std::make_unique<Incaltaminte>(*this);
 }
 
-bool Incaltaminte::SePotrivesteLaEveniment(const std::string &eveniment) const
-{
-    return true;
-}
-
 std::string Incaltaminte::Tip() const
 {
     return "Incaltaminte";
+}
+
+bool Incaltaminte::SePotrivesteLaEveniment(const std::string &eveniment) const
+{
+    (void)eveniment;
+    return true;
 }
 
 Accesoriu::Accesoriu(const std::string &nume, const std::string &culoare, int pret, const std::string &categorie)
@@ -61,11 +64,14 @@ std::unique_ptr<Articol> Accesoriu::clone() const
 {
     return std::make_unique<Accesoriu>(*this);
 }
-bool Accesoriu::SePotrivesteLaEveniment(const std::string &eveniment) const
-{
-    return true;
-}
+
 std::string Accesoriu::Tip() const
 {
     return categorie_;
+}
+
+bool Accesoriu::SePotrivesteLaEveniment(const std::string &eveniment) const
+{
+    (void)eveniment;
+    return true;
 }
