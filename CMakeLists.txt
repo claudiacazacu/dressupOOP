@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
 
 set(MAIN_PROJECT_NAME "dressupOOP")
-set(MAIN_EXECUTABLE_NAME "dressup")
+set(MAIN_EXECUTABLE_NAME "oop")
 
 project(${MAIN_PROJECT_NAME})
 
