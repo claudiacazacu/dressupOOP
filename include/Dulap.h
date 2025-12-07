@@ -12,7 +12,7 @@ class Dulap
 
 public:
     friend std::ostream &operator<<(std::ostream &os, const Dulap &d);
-    Dulap(int capacitate = 20, const std::string &proprietar = "Anonim");
+    explicit Dulap(int capacitate = 20, const std::string &proprietar = "Anonim");
     Dulap(const Dulap &other);
     Dulap &operator=(Dulap other);
     ~Dulap() = default;
