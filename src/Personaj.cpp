@@ -62,3 +62,9 @@ void Personaj::AfiseazaEchipamentDeSezon(const std::string &sezon, std::ostream 
     if (!gasit)
         os << "  Nu exista articole de sezonul " << sezon << " in dulap.\n";
 }
+// ... la sfârșitul fișierului ...
+
+std::ostream& operator<<(std::ostream& os, const Personaj& p) {
+    p.Afiseaza(os);
+    return os;
+}

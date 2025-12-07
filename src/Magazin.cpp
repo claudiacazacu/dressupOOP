@@ -53,3 +53,7 @@ std::unique_ptr<Articol> Magazin::ExtrageArticol(const std::string &nume)
     }
     return nullptr;
 }
+std::ostream& operator<<(std::ostream& os, const Magazin& m) {
+    m.Afiseaza(os); 
+    return os;
+}
