@@ -21,7 +21,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
     src/ArticolFactory.cpp
     src/Dulap.cpp
     src/Exceptions.cpp
-    src/GameSession.cpp
+    src/GameSessions.cpp
     src/Haina.cpp
     src/Magazin.cpp
     src/Pantalon.cpp
