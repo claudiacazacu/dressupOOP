@@ -13,7 +13,7 @@ class Dulap
     std::string proprietar_;
 
 public:
-    explicit Dulap(int capacitate = 20, const std::string &proprietar = "Anonim");
+    explicit Dulap(int capacitate = 20, std::string proprietar = "Anonim");
     Dulap(const Dulap &other);
     Dulap &operator=(Dulap other);
     ~Dulap() = default;

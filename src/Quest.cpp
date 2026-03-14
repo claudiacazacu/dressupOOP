@@ -3,8 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
-Quest::Quest(const std::string& nume, const std::string& descriere, TipQuest tip, int obiectiv, int recompensaSold)
-    : nume_(nume), descriere_(descriere), tip_(tip), obiectiv_(obiectiv), recompensaSold_(recompensaSold)
+Quest::Quest(std::string nume, std::string descriere, TipQuest tip, int obiectiv, int recompensaSold)
+    : nume_(std::move(nume)), descriere_(std::move(descriere)), tip_(tip), obiectiv_(obiectiv), recompensaSold_(recompensaSold)
 {}
 
 void Quest::ActualizeazaProgres(const Personaj& personaj)
@@ -13,7 +13,7 @@ void Quest::ActualizeazaProgres(const Personaj& personaj)
 
     switch (tip_) {
         case TipQuest::CUMPARA_ARTICOLE:
-            progres_ = personaj.GetDulap().GetArticole().size();
+            progres_ = static_cast<int>(personaj.GetDulap().GetArticole().size());
             break;
         case TipQuest::ATINGE_VALOARE_DULAP:
             progres_ = personaj.GetDulap().CalculeazaValoareTotala();
@@ -30,7 +30,7 @@ void Quest::ActualizeazaProgres(const Personaj& personaj)
         }
         case TipQuest::DETINE_TINUTA_EVENIMENT:
             // Pentru simplitate, verificăm dacă avem suficiente articole pentru eveniment
-            progres_ = personaj.GetDulap().NumarArticolePentruEveniment("Gala");
+            progres_ = static_cast<int>(personaj.GetDulap().NumarArticolePentruEveniment("Gala"));
             break;
     }
 
@@ -96,7 +96,7 @@ SistemQuest::SistemQuest()
     ));
 }
 
-void SistemQuest::AdaugaQuest(std::shared_ptr<Quest> quest)
+void SistemQuest::AdaugaQuest(const std::shared_ptr<Quest>& quest)
 {
     if (quest) {
         questuriActive_.push_back(quest);

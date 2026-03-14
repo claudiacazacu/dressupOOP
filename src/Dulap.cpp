@@ -4,8 +4,8 @@
 #include <vector>
 #include <utility>
 
-Dulap::Dulap(int capacitate, const std::string &proprietar)
-    : capacitate_(capacitate), proprietar_(proprietar)
+Dulap::Dulap(int capacitate, std::string proprietar)
+    : capacitate_(capacitate), proprietar_(std::move(proprietar))
 {
     if (capacitate_ <= 0)
     {

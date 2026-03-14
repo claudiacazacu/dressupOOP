@@ -18,8 +18,8 @@ private:
     std::vector<std::shared_ptr<Observer>> observers_;
 
 public:
-    void Attach(std::shared_ptr<Observer> observer);
-    void Detach(std::shared_ptr<Observer> observer);
+    void Attach(const std::shared_ptr<Observer>& observer);
+    void Detach(const std::shared_ptr<Observer>& observer);
     void Notify(const std::string& evenimentNou);
 
 protected:
@@ -33,7 +33,7 @@ private:
     std::string numePersonaj_;
 
 public:
-    explicit PersonajObserver(const std::string& numePersonaj);
+    explicit PersonajObserver(std::string numePersonaj);
 
     void Update(const std::string& evenimentNou) override;
     std::string GetNume() const override;
@@ -46,7 +46,7 @@ private:
     std::string numeMagazin_;
 
 public:
-    explicit MagazinObserver(const std::string& numeMagazin);
+    explicit MagazinObserver(std::string numeMagazin);
 
     void Update(const std::string& evenimentNou) override;
     std::string GetNume() const override;

@@ -25,7 +25,7 @@ private:
     int recompensaSold_ = 0;
 
 public:
-    Quest(const std::string& nume, const std::string& descriere, TipQuest tip, int obiectiv, int recompensaSold);
+    Quest(std::string nume, std::string descriere, TipQuest tip, int obiectiv, int recompensaSold);
 
     // Getteri
     const std::string& GetNume() const { return nume_; }
@@ -56,7 +56,7 @@ public:
     SistemQuest();
 
     // Gestionare questuri
-    void AdaugaQuest(std::shared_ptr<Quest> quest);
+    void AdaugaQuest(const std::shared_ptr<Quest>& quest);
     void ActualizeazaToateQuesturile(const Personaj& personaj);
     void MarcheazaQuestComplet(const std::string& numeQuest);
 

@@ -21,7 +21,7 @@ class Personaj
 public:
     friend std::ostream &operator<<(std::ostream &os, const Personaj &p);
 
-    Personaj(const std::string &nume, const std::string &nationalitate, int nivel = 1, int sold = 100);
+    Personaj(std::string nume, std::string nationalitate, int nivel = 1, int sold = 100);
     Personaj(const Personaj &other);
     Personaj &operator=(Personaj other);
     ~Personaj() = default;

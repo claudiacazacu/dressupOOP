@@ -1,9 +1,9 @@
 #include "ArticolDerivate.h"
 #include "Exceptions.h"
 
-Imbracaminte::Imbracaminte(const std::string &nume, const std::string &culoare, int pret, const std::string &sezon,
+Imbracaminte::Imbracaminte(const std::string &nume, const std::string &culoare, int pret, std::string sezon,
                            const std::string &raritate, double rating, int popularitate)
-    : Articol(nume, culoare, pret, raritate, rating, popularitate), sezon_(sezon)
+    : Articol(nume, culoare, pret, raritate, rating, popularitate), sezon_(std::move(sezon))
 {
     if (sezon_.empty())
     {
@@ -66,9 +66,9 @@ bool Incaltaminte::SePotrivesteLaEveniment(const std::string &eveniment) const
     return eveniment != "Ski" || culoare_ != "Alb";
 }
 
-Accesoriu::Accesoriu(const std::string &nume, const std::string &culoare, int pret, const std::string &categorie,
+Accesoriu::Accesoriu(const std::string &nume, const std::string &culoare, int pret, std::string categorie,
                       const std::string &raritate, double rating, int popularitate)
-    : Articol(nume, culoare, pret, raritate, rating, popularitate), categorie_(categorie)
+    : Articol(nume, culoare, pret, raritate, rating, popularitate), categorie_(std::move(categorie))
 {
     if (categorie_.empty())
     {

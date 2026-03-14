@@ -2,12 +2,12 @@
 #include <algorithm>
 
 RecomandatorTinute::RecomandatorTinute(std::shared_ptr<StrategieRecomandare> strategie)
-    : strategie_(strategie)
+    : strategie_(std::move(strategie))
 {}
 
 void RecomandatorTinute::SetStrategie(std::shared_ptr<StrategieRecomandare> strategie)
 {
-    strategie_ = strategie;
+    strategie_ = std::move(strategie);
 }
 
 std::vector<Tinuta> RecomandatorTinute::GenereazaRecomandari(const Personaj& personaj, const std::string& eveniment) const

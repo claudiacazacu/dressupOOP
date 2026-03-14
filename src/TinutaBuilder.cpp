@@ -8,7 +8,7 @@ TinutaBuilder& TinutaBuilder::SetNume(const std::string& nume)
     return *this;
 }
 
-TinutaBuilder& TinutaBuilder::AdaugaArticol(std::shared_ptr<Articol> articol)
+TinutaBuilder& TinutaBuilder::AdaugaArticol(const std::shared_ptr<Articol>& articol)
 {
     if (articol) {
         articole_.push_back(articol);
@@ -16,7 +16,7 @@ TinutaBuilder& TinutaBuilder::AdaugaArticol(std::shared_ptr<Articol> articol)
     return *this;
 }
 
-TinutaBuilder& TinutaBuilder::AdaugaImbracaminte(std::shared_ptr<Articol> imbracaminte)
+TinutaBuilder& TinutaBuilder::AdaugaImbracaminte(const std::shared_ptr<Articol>& imbracaminte)
 {
     if (imbracaminte && dynamic_cast<Imbracaminte*>(imbracaminte.get())) {
         return AdaugaArticol(imbracaminte);
@@ -24,7 +24,7 @@ TinutaBuilder& TinutaBuilder::AdaugaImbracaminte(std::shared_ptr<Articol> imbrac
     return *this;
 }
 
-TinutaBuilder& TinutaBuilder::AdaugaIncaltaminte(std::shared_ptr<Articol> incaltaminte)
+TinutaBuilder& TinutaBuilder::AdaugaIncaltaminte(const std::shared_ptr<Articol>& incaltaminte)
 {
     if (incaltaminte && dynamic_cast<Incaltaminte*>(incaltaminte.get())) {
         return AdaugaArticol(incaltaminte);
@@ -32,7 +32,7 @@ TinutaBuilder& TinutaBuilder::AdaugaIncaltaminte(std::shared_ptr<Articol> incalt
     return *this;
 }
 
-TinutaBuilder& TinutaBuilder::AdaugaAccesoriu(std::shared_ptr<Articol> accesoriu)
+TinutaBuilder& TinutaBuilder::AdaugaAccesoriu(const std::shared_ptr<Articol>& accesoriu)
 {
     if (accesoriu && dynamic_cast<Accesoriu*>(accesoriu.get())) {
         return AdaugaArticol(accesoriu);

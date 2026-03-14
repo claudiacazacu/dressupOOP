@@ -8,8 +8,8 @@
 
 int Personaj::totalPersonaje_ = 0;
 
-Personaj::Personaj(const std::string &nume, const std::string &nationalitate, int nivel, int sold)
-    : nume_(nume), nationalitate_(nationalitate), nivel_(nivel), dulap_(15, nume), sold_(sold)
+Personaj::Personaj(std::string nume, std::string nationalitate, int nivel, int sold)
+    : nume_(std::move(nume)), nationalitate_(std::move(nationalitate)), nivel_(nivel), dulap_(15, nume_), sold_(sold)
 {
     if (nume_.empty())
     {

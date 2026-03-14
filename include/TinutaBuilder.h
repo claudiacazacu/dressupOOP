@@ -10,10 +10,10 @@ private:
 
 public:
     TinutaBuilder& SetNume(const std::string& nume);
-    TinutaBuilder& AdaugaArticol(std::shared_ptr<Articol> articol);
-    TinutaBuilder& AdaugaImbracaminte(std::shared_ptr<Articol> imbracaminte);
-    TinutaBuilder& AdaugaIncaltaminte(std::shared_ptr<Articol> incaltaminte);
-    TinutaBuilder& AdaugaAccesoriu(std::shared_ptr<Articol> accesoriu);
+    TinutaBuilder& AdaugaArticol(const std::shared_ptr<Articol>& articol);
+    TinutaBuilder& AdaugaImbracaminte(const std::shared_ptr<Articol>& imbracaminte);
+    TinutaBuilder& AdaugaIncaltaminte(const std::shared_ptr<Articol>& incaltaminte);
+    TinutaBuilder& AdaugaAccesoriu(const std::shared_ptr<Articol>& accesoriu);
 
     Tinuta Build() const;
     void Reset();

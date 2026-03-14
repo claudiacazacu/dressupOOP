@@ -6,7 +6,7 @@
 
 size_t Magazin::totalArticoleMagazin_ = 0;
 
-Magazin::Magazin(const std::string &nume, const std::string &fisierArticole) : nume_(nume)
+Magazin::Magazin(std::string nume, const std::string &fisierArticole) : nume_(std::move(nume))
 {
     if (nume_.empty())
     {

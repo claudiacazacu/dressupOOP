@@ -1,12 +1,12 @@
 #include "Observer.h"
 #include <algorithm>
 
-void Subject::Attach(std::shared_ptr<Observer> observer)
+void Subject::Attach(const std::shared_ptr<Observer>& observer)
 {
     observers_.push_back(observer);
 }
 
-void Subject::Detach(std::shared_ptr<Observer> observer)
+void Subject::Detach(const std::shared_ptr<Observer>& observer)
 {
     auto it = std::find(observers_.begin(), observers_.end(), observer);
     if (it != observers_.end()) {
@@ -22,8 +22,8 @@ void Subject::Notify(const std::string& evenimentNou)
 }
 
 // Implementare PersonajObserver
-PersonajObserver::PersonajObserver(const std::string& numePersonaj)
-    : numePersonaj_(numePersonaj)
+PersonajObserver::PersonajObserver(std::string numePersonaj)
+    : numePersonaj_(std::move(numePersonaj))
 {}
 
 void PersonajObserver::Update(const std::string& evenimentNou)
@@ -40,8 +40,8 @@ std::string PersonajObserver::GetNume() const
 }
 
 // Implementare MagazinObserver
-MagazinObserver::MagazinObserver(const std::string& numeMagazin)
-    : numeMagazin_(numeMagazin)
+MagazinObserver::MagazinObserver(std::string numeMagazin)
+    : numeMagazin_(std::move(numeMagazin))
 {}
 
 void MagazinObserver::Update(const std::string& evenimentNou)

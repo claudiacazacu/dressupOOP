@@ -14,7 +14,7 @@ class Magazin
 public:
     friend std::ostream &operator<<(std::ostream &os, const Magazin &m);
 
-    explicit Magazin(const std::string &nume, const std::string &fisierArticole = "magazin.txt");
+    explicit Magazin(std::string nume, const std::string &fisierArticole = "magazin.txt");
 
     void IncarcaDinFisier(const std::string &fisierArticole);
     void Afiseaza(std::ostream &os) const;

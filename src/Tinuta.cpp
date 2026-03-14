@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-Tinuta::Tinuta(const std::string& nume) : nume_(nume) {}
+Tinuta::Tinuta(std::string nume) : nume_(std::move(nume)) {}
 
 Tinuta::Tinuta(const Tinuta& other) : nume_(other.nume_), articole_(other.articole_) {}
 

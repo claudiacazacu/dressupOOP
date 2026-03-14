@@ -5,13 +5,13 @@ Rochie::Rochie(const std::string &nume,
                const std::string &culoare,
                int pret,
                const std::string &sezon,
-               const std::string &croiala,
+               std::string croiala,
                bool eleganta,
                const std::string &raritate,
                double rating,
                int popularitate)
     : Imbracaminte(nume, culoare, pret, sezon, raritate, rating, popularitate),
-      croiala_(croiala), eleganta_(eleganta)
+      croiala_(std::move(croiala)), eleganta_(eleganta)
 {
     if (croiala_.empty())
     {

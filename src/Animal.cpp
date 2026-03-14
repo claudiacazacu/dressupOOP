@@ -1,9 +1,9 @@
 #include "Animal.h"
 #include "Exceptions.h"
 
-Animal::Animal(const std::string &nume, const std::string &culoare, int pret, const std::string &specie,
+Animal::Animal(const std::string &nume, const std::string &culoare, int pret, std::string specie,
                const std::string &raritate, double rating, int popularitate)
-    : Articol(nume, culoare, pret, raritate, rating, popularitate), specie_(specie)
+    : Articol(nume, culoare, pret, raritate, rating, popularitate), specie_(std::move(specie))
 {
     if (specie_.empty())
     {

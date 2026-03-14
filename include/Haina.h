@@ -11,7 +11,7 @@ public:
           const std::string &culoare,
           int pret,
           const std::string &sezon,
-          const std::string &material,
+          std::string material,
           bool areGluga,
           const std::string &raritate = "Comun",
           double rating = 3.0,

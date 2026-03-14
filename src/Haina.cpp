@@ -2,10 +2,10 @@
 #include "Exceptions.h"
 
 Haina::Haina(const std::string &nume, const std::string &culoare, int pret,
-             const std::string &sezon, const std::string &material, bool areGluga,
+             const std::string &sezon, std::string material, bool areGluga,
              const std::string &raritate, double rating, int popularitate)
     : Imbracaminte(nume, culoare, pret, sezon, raritate, rating, popularitate),
-      material_(material), areGluga_(areGluga)
+      material_(std::move(material)), areGluga_(areGluga)
 {
     if (material_.empty())
     {

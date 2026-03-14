@@ -10,7 +10,7 @@ protected:
     std::string sezon_;
 
 public:
-    Imbracaminte(const std::string &nume, const std::string &culoare, int pret, const std::string &sezon,
+    Imbracaminte(const std::string &nume, const std::string &culoare, int pret, std::string sezon,
                  const std::string &raritate = "Comun", double rating = 3.0, int popularitate = 0);
 
     void AfiseazaImpl(std::ostream &os) const override;
@@ -39,7 +39,7 @@ class Accesoriu : public Articol
     std::string categorie_;
 
 public:
-    Accesoriu(const std::string &nume, const std::string &culoare, int pret, const std::string &categorie,
+    Accesoriu(const std::string &nume, const std::string &culoare, int pret, std::string categorie,
               const std::string &raritate = "Comun", double rating = 3.0, int popularitate = 0);
     void AfiseazaImpl(std::ostream &os) const override;
     std::unique_ptr<Articol> clone() const override;
