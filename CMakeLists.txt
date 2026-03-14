@@ -41,6 +41,12 @@ set_target_properties(${MAIN_EXECUTABLE_NAME} PROPERTIES
 
 install(TARGETS ${MAIN_EXECUTABLE_NAME} DESTINATION bin)
 
+install(FILES
+    data/tastatura.txt
+    data/magazin.txt
+    DESTINATION bin
+)
+
 if(APPLE)
     install(FILES launcher.command DESTINATION bin)
 endif()
