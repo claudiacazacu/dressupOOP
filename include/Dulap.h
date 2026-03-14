@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 #include "Articol.h"
+#include <vector>
+#include <string>
 
 class Dulap
 {

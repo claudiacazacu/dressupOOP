@@ -1,6 +1,7 @@
 #include "Personaj.h"
 #include "ArticolDerivate.h"
 #include "Exceptions.h"
+#include <algorithm>
 #include <list>
 #include <memory>
 #include <utility>
@@ -125,6 +126,11 @@ void Personaj::AfiseazaAnalizaInventar(const std::string &eveniment, std::ostrea
 const Dulap &Personaj::GetDulap() const noexcept
 {
     return dulap_;
+}
+
+const SistemQuest &Personaj::GetSistemQuest() const noexcept
+{
+    return sistemQuest_;
 }
 
 int Personaj::TotalPersonaje() noexcept

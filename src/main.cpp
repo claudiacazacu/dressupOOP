@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <functional>
 
 #include "Animal.h"
 #include "Articol.h"
@@ -36,7 +37,6 @@ int main()
         session.SetEvenimentCurent("Gala");
         session.SetSezonPreferat("Vara");
 
-        // Adaugă observatori pentru GameSession
         auto personajObserver = std::make_shared<PersonajObserver>("Claudy");
         auto magazinObserver = std::make_shared<MagazinObserver>("Magazinul Jocului");
         session.Attach(personajObserver);
@@ -45,13 +45,11 @@ int main()
         Magazin shop("Magazinul Jocului", "magazin.txt");
         Personaj player("Claudy", "Romanian", 1, 350);
 
-        // Inițializează strategii de recomandare
         auto strategiePret = std::make_shared<StrategiePretMinimizat>();
         auto strategieEleganta = std::make_shared<StrategieElegantaMaximizata>();
         auto strategieSezon = std::make_shared<StrategieSezonPotrivit>();
         RecomandatorTinute recomandator(strategiePret);
 
-        // Creează o ținută de test
         Tinuta tinutaTest("Tinuta Test");
         TinutaBuilder builder;
 
@@ -164,7 +162,6 @@ int main()
             {
                 std::cout << "Testare functionalitati Tinuta:\n";
 
-                // Adaugă articole la ținuta de test
                 if (!player.GetDulap().GetArticole().empty()) {
                     auto it = player.GetDulap().GetArticole().begin();
                     tinutaTest.AdaugaArticol(std::shared_ptr<Articol>((*it)->clone().release()));
@@ -173,7 +170,6 @@ int main()
 
                 std::cout << tinutaTest << "\n";
 
-                // Testează eliminare articol
                 if (!tinutaTest.GetArticole().empty()) {
                     std::string numePrimul = tinutaTest.GetArticole()[0]->GetNume();
                     if (tinutaTest.EliminaArticol(numePrimul)) {
@@ -181,7 +177,6 @@ int main()
                     }
                 }
 
-                // Testează golire
                 tinutaTest.Goleste();
                 std::cout << "Tinuta golita. Numar articole ramas: " << tinutaTest.GetNumarArticole() << "\n";
             }
@@ -195,7 +190,6 @@ int main()
                 builder.SetNume("Tinuta Custom");
                 std::cout << "Setat nume: Tinuta Custom\n";
 
-                // Adaugă articole folosind metodele specializate
                 if (!player.GetDulap().GetArticole().empty()) {
                     for (const auto& articol : player.GetDulap().GetArticole()) {
                         if (dynamic_cast<const Imbracaminte*>(articol.get())) {
@@ -206,7 +200,6 @@ int main()
                     }
                 }
 
-                // Adaugă încălțăminte dacă există
                 for (const auto& articol : shop.GetArticole()) {
                     if (dynamic_cast<const Incaltaminte*>(articol.get())) {
                         builder.AdaugaIncaltaminte(std::shared_ptr<Articol>(articol->clone().release()));
@@ -215,7 +208,6 @@ int main()
                     }
                 }
 
-                // Adaugă accesoriu dacă există
                 for (const auto& articol : shop.GetArticole()) {
                     if (dynamic_cast<const Accesoriu*>(articol.get())) {
                         builder.AdaugaAccesoriu(std::shared_ptr<Articol>(articol->clone().release()));
@@ -241,8 +233,6 @@ int main()
                 player.AfiseazaQuesturiActive(std::cout);
                 player.AfiseazaQuesturiCompletate(std::cout);
 
-                // Marchează primul quest ca completat dacă există
-                // (doar pentru demonstrație)
                 std::cout << "Marcare quest completat (demonstratie)\n";
             }
             else if (comanda == "TEST_FILTRARE")
@@ -261,12 +251,46 @@ int main()
                 auto articolePremium = player.GetDulap().RecomandaArticolePremium();
                 std::cout << "Articole premium recomandate: " << articolePremium.size() << "\n";
             }
-            else if (comanda == "TEST_OBSERVER")
+            else if (comanda == "TEST_UNUSED_FUNCTIONS")
             {
-                std::cout << "Testare sistem Observer:\n";
-                std::cout << "Schimbare eveniment pentru a declansa notificari...\n";
-                session.SetEvenimentCurent("Petrecere");
-                std::cout << "Eveniment schimbat la: " << session.GetEvenimentCurent() << "\n";
+                std::cout << "Testare toate functiile nefolosite anterior:\n";
+
+                if (!player.GetDulap().GetArticole().empty()) {
+                    auto it = player.GetDulap().GetArticole().begin();
+                    std::shared_ptr<Articol> articolTest = std::shared_ptr<Articol>((*it)->clone().release());
+
+                    articolTest->SetRaritate("Epic");
+                    articolTest->SetRating(4.5);
+                    articolTest->IncrementeazaPopularitate();
+
+                    std::cout << "Articol modificat - Raritate: " << articolTest->GetRaritate()
+                              << ", Rating: " << articolTest->GetRating()
+                              << ", Popularitate: " << articolTest->GetPopularitate() << "\n";
+                }
+
+                if (!player.GetSistemQuest().GetQuesturiActive().empty()) {
+                    auto quest = player.GetSistemQuest().GetQuesturiActive()[0];
+                    std::cout << "Quest info - Descriere: " << quest->GetDescriere()
+                              << ", Tip: " << static_cast<int>(quest->GetTip())
+                              << ", Obiectiv: " << quest->GetObiectiv()
+                              << ", Progres: " << quest->GetProgres()
+                              << ", Recompensa: " << quest->GetRecompensaSold() << "\n";
+
+                    quest->Reseteaza();
+                    std::cout << "Quest resetat - Progres: " << quest->GetProgres() << "\n";
+                }
+
+                auto questuriCompletate = player.GetSistemQuest().GetQuesturiCompletate();
+                std::cout << "Numar questuri completate: " << questuriCompletate.size() << "\n";
+
+                session.Detach(personajObserver);
+                std::cout << "Observer detasat\n";
+
+                Tinuta ceaMaiBuna = player.CeaMaiBunaTinuta(session.GetEvenimentCurent(), "eleganta");
+                std::cout << "Cea mai buna tinuta dupa eleganta:\n" << ceaMaiBuna << "\n";
+
+                session.Attach(personajObserver);
+                std::cout << "Observer reatasat\n";
             }
             else if (comanda == "EXIT")
             {

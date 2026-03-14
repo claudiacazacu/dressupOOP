@@ -1,5 +1,7 @@
 #include "Dulap.h"
 #include "Exceptions.h"
+#include <algorithm>
+#include <vector>
 #include <utility>
 
 Dulap::Dulap(int capacitate, const std::string &proprietar)

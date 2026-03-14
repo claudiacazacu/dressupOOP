@@ -1,4 +1,5 @@
 #include "Observer.h"
+#include <algorithm>
 
 void Subject::Attach(std::shared_ptr<Observer> observer)
 {

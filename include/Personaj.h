@@ -44,5 +44,6 @@ public:
     void MarcheazaQuestComplet(const std::string &numeQuest);
 
     const Dulap &GetDulap() const noexcept;
+    const SistemQuest &GetSistemQuest() const noexcept;
     static int TotalPersonaje() noexcept;
 };
