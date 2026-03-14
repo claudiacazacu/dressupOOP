@@ -1,8 +1,9 @@
 #include "Animal.h"
 #include "Exceptions.h"
 
-Animal::Animal(const std::string &nume, const std::string &culoare, int pret, const std::string &specie)
-    : Articol(nume, culoare, pret), specie_(specie)
+Animal::Animal(const std::string &nume, const std::string &culoare, int pret, const std::string &specie,
+               const std::string &raritate, double rating, int popularitate)
+    : Articol(nume, culoare, pret, raritate, rating, popularitate), specie_(specie)
 {
     if (specie_.empty())
     {
@@ -12,7 +13,8 @@ Animal::Animal(const std::string &nume, const std::string &culoare, int pret, co
 
 void Animal::AfiseazaImpl(std::ostream &os) const
 {
-    os << "[Animal] " << nume_ << " | Pret: " << pret_ << " | Specie: " << specie_;
+    os << "[Animal] " << nume_ << " | Pret: " << pret_ << " | Specie: " << specie_
+       << " | Raritate: " << raritate_ << " | Rating: " << rating_;
 }
 
 std::unique_ptr<Articol> Animal::clone() const

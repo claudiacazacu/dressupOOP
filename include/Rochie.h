@@ -12,7 +12,10 @@ public:
            int pret,
            const std::string &sezon,
            const std::string &croiala,
-           bool eleganta);
+           bool eleganta,
+           const std::string &raritate = "Comun",
+           double rating = 3.0,
+           int popularitate = 0);
 
     void AfiseazaImpl(std::ostream &os) const override;
     std::unique_ptr<Articol> clone() const override;

@@ -14,6 +14,7 @@ GameSession &GameSession::Instance()
 void GameSession::SetEvenimentCurent(const std::string &eveniment)
 {
     evenimentCurent_ = eveniment;
+    Notify(eveniment); // Notifică toți observatorii
 }
 
 void GameSession::SetSezonPreferat(const std::string &sezon)

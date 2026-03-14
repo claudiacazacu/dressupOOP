@@ -77,6 +77,9 @@ void Personaj::Cumpara(std::unique_ptr<Articol> articol)
 
     sold_ -= articol->GetPret();
     dulap_.AdaugaArticol(std::move(articol));
+
+    // Actualizează questurile după cumpărare
+    ActualizeazaQuesturi();
 }
 
 void Personaj::AfiseazaEchipamentDeSezon(const std::string &sezon, std::ostream &os) const
@@ -129,8 +132,105 @@ int Personaj::TotalPersonaje() noexcept
     return totalPersonaje_;
 }
 
+// Implementări pentru combinații recomandate
+std::vector<Tinuta> Personaj::GenereazaTinutePentruEveniment(const std::string &eveniment) const
+{
+    std::vector<Tinuta> tinute;
+    const auto& articole = dulap_.GetArticole();
+
+    // Colectăm articolele potrivite pentru eveniment
+    std::vector<std::shared_ptr<Articol>> articolePotrivite;
+    for (const auto& articol : articole) {
+        if (articol->SePotrivesteLaEveniment(eveniment)) {
+            articolePotrivite.push_back(std::shared_ptr<Articol>(articol->clone().release()));
+        }
+    }
+
+    if (articolePotrivite.size() < 2) {
+        return tinute; // Nu putem forma ținute cu mai puțin de 2 articole
+    }
+
+    // Generăm combinații simple (2-4 articole)
+    for (size_t i = 0; i < articolePotrivite.size(); ++i) {
+        for (size_t j = i + 1; j < articolePotrivite.size(); ++j) {
+            Tinuta tinuta("Tinuta " + std::to_string(tinute.size() + 1));
+            tinuta.AdaugaArticol(articolePotrivite[i]);
+            tinuta.AdaugaArticol(articolePotrivite[j]);
+
+            // Adăugăm un al treilea articol dacă e posibil
+            if (j + 1 < articolePotrivite.size()) {
+                tinuta.AdaugaArticol(articolePotrivite[j + 1]);
+            }
+
+            // Verificăm dacă ținuta respectă regulile
+            if (tinuta.ArticoleleSePotrivescSezon() && tinuta.EstePotrivitaPentruEveniment(eveniment)) {
+                tinute.push_back(tinuta);
+            }
+
+            if (tinute.size() >= 10) break; // Limităm la 10 ținute pentru performanță
+        }
+        if (tinute.size() >= 10) break;
+    }
+
+    return tinute;
+}
+
+Tinuta Personaj::CeaMaiBunaTinuta(const std::string &eveniment, const std::string &criteriu) const
+{
+    auto tinute = GenereazaTinutePentruEveniment(eveniment);
+    if (tinute.empty()) {
+        return Tinuta("Nicio tinuta disponibila");
+    }
+
+    tinute = SorteazaTinute(std::move(tinute), criteriu);
+    return tinute.front();
+}
+
+std::vector<Tinuta> Personaj::SorteazaTinute(std::vector<Tinuta> tinute, const std::string &criteriu) const
+{
+    if (criteriu == "pret") {
+        std::sort(tinute.begin(), tinute.end(),
+            [](const Tinuta& a, const Tinuta& b) {
+                return a.CalculeazaValoareTotala() < b.CalculeazaValoareTotala();
+            });
+    } else if (criteriu == "eleganta") {
+        std::sort(tinute.begin(), tinute.end(),
+            [](const Tinuta& a, const Tinuta& b) {
+                return a.CalculeazaElegantaMedie() > b.CalculeazaElegantaMedie();
+            });
+    } else if (criteriu == "numar_articole") {
+        std::sort(tinute.begin(), tinute.end(),
+            [](const Tinuta& a, const Tinuta& b) {
+                return a.GetNumarArticole() > b.GetNumarArticole();
+            });
+    }
+
+    return tinute;
+}
+
 std::ostream &operator<<(std::ostream &os, const Personaj &p)
 {
     p.Afiseaza(os);
     return os;
+}
+
+// Implementări pentru questuri
+void Personaj::ActualizeazaQuesturi()
+{
+    sistemQuest_.ActualizeazaToateQuesturile(*this);
+}
+
+void Personaj::AfiseazaQuesturiActive(std::ostream &os) const
+{
+    sistemQuest_.AfiseazaQuesturiActive(os);
+}
+
+void Personaj::AfiseazaQuesturiCompletate(std::ostream &os) const
+{
+    sistemQuest_.AfiseazaQuesturiCompletate(os);
+}
+
+void Personaj::MarcheazaQuestComplet(const std::string &numeQuest)
+{
+    sistemQuest_.MarcheazaQuestComplet(numeQuest);
 }

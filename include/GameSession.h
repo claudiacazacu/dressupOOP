@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include "Observer.h"
 
-class GameSession
+class GameSession : public Subject
 {
     std::string evenimentCurent_;
     std::string sezonPreferat_;

@@ -1,8 +1,9 @@
 #include "ArticolDerivate.h"
 #include "Exceptions.h"
 
-Imbracaminte::Imbracaminte(const std::string &nume, const std::string &culoare, int pret, const std::string &sezon)
-    : Articol(nume, culoare, pret), sezon_(sezon)
+Imbracaminte::Imbracaminte(const std::string &nume, const std::string &culoare, int pret, const std::string &sezon,
+                           const std::string &raritate, double rating, int popularitate)
+    : Articol(nume, culoare, pret, raritate, rating, popularitate), sezon_(sezon)
 {
     if (sezon_.empty())
     {
@@ -13,7 +14,8 @@ Imbracaminte::Imbracaminte(const std::string &nume, const std::string &culoare, 
 void Imbracaminte::AfiseazaImpl(std::ostream &os) const
 {
     os << "[Imbracaminte] " << nume_ << " | Pret: " << pret_
-       << " | Culoare: " << culoare_ << " | Sezon: " << sezon_;
+       << " | Culoare: " << culoare_ << " | Sezon: " << sezon_
+       << " | Raritate: " << raritate_ << " | Rating: " << rating_;
 }
 
 std::unique_ptr<Articol> Imbracaminte::clone() const
@@ -32,8 +34,9 @@ bool Imbracaminte::SePotrivesteLaEveniment(const std::string &eveniment) const
     return true;
 }
 
-Incaltaminte::Incaltaminte(const std::string &nume, const std::string &culoare, int pret, int marime)
-    : Articol(nume, culoare, pret), marime_(marime)
+Incaltaminte::Incaltaminte(const std::string &nume, const std::string &culoare, int pret, int marime,
+                           const std::string &raritate, double rating, int popularitate)
+    : Articol(nume, culoare, pret, raritate, rating, popularitate), marime_(marime)
 {
     if (marime_ <= 0)
     {
@@ -44,7 +47,8 @@ Incaltaminte::Incaltaminte(const std::string &nume, const std::string &culoare, 
 void Incaltaminte::AfiseazaImpl(std::ostream &os) const
 {
     os << "[Incaltaminte] " << nume_ << " | Pret: " << pret_
-       << " | Culoare: " << culoare_ << " | Marime: " << marime_;
+       << " | Culoare: " << culoare_ << " | Marime: " << marime_
+       << " | Raritate: " << raritate_ << " | Rating: " << rating_;
 }
 
 std::unique_ptr<Articol> Incaltaminte::clone() const
@@ -62,8 +66,9 @@ bool Incaltaminte::SePotrivesteLaEveniment(const std::string &eveniment) const
     return eveniment != "Ski" || culoare_ != "Alb";
 }
 
-Accesoriu::Accesoriu(const std::string &nume, const std::string &culoare, int pret, const std::string &categorie)
-    : Articol(nume, culoare, pret), categorie_(categorie)
+Accesoriu::Accesoriu(const std::string &nume, const std::string &culoare, int pret, const std::string &categorie,
+                      const std::string &raritate, double rating, int popularitate)
+    : Articol(nume, culoare, pret, raritate, rating, popularitate), categorie_(categorie)
 {
     if (categorie_.empty())
     {
@@ -74,7 +79,8 @@ Accesoriu::Accesoriu(const std::string &nume, const std::string &culoare, int pr
 void Accesoriu::AfiseazaImpl(std::ostream &os) const
 {
     os << "[Accesoriu] " << nume_ << " | Pret: " << pret_
-       << " | Culoare: " << culoare_ << " | Categorie: " << categorie_;
+       << " | Culoare: " << culoare_ << " | Categorie: " << categorie_
+       << " | Raritate: " << raritate_ << " | Rating: " << rating_;
 }
 
 std::unique_ptr<Articol> Accesoriu::clone() const

@@ -26,5 +26,11 @@ public:
     void AfiseazaPotrivitePentruEveniment(const std::string &eveniment, std::ostream &os) const;
     size_t NumarArticolePentruEveniment(const std::string &eveniment) const noexcept;
 
+    // Funcții pentru filtrare și sortare după raritate/rating
+    std::vector<std::shared_ptr<Articol>> FiltreazaDupaRaritate(const std::string &raritate) const;
+    std::vector<std::shared_ptr<Articol>> SorteazaDupaRating(bool descrescator = true) const;
+    std::vector<std::shared_ptr<Articol>> SorteazaDupaPret(bool descrescator = true) const;
+    std::vector<std::shared_ptr<Articol>> RecomandaArticolePremium() const;
+
     const std::list<std::unique_ptr<Articol>> &GetArticole() const noexcept;
 };

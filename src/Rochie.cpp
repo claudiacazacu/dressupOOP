@@ -6,8 +6,12 @@ Rochie::Rochie(const std::string &nume,
                int pret,
                const std::string &sezon,
                const std::string &croiala,
-               bool eleganta)
-    : Imbracaminte(nume, culoare, pret, sezon), croiala_(croiala), eleganta_(eleganta)
+               bool eleganta,
+               const std::string &raritate,
+               double rating,
+               int popularitate)
+    : Imbracaminte(nume, culoare, pret, sezon, raritate, rating, popularitate),
+      croiala_(croiala), eleganta_(eleganta)
 {
     if (croiala_.empty())
     {
@@ -22,7 +26,8 @@ void Rochie::AfiseazaImpl(std::ostream &os) const
        << " | Culoare: " << culoare_
        << " | Sezon: " << GetSezon()
        << " | Croiala: " << croiala_
-       << " | " << (eleganta_ ? "Eleganta" : "Casual");
+       << " | " << (eleganta_ ? "Eleganta" : "Casual")
+       << " | Raritate: " << raritate_ << " | Rating: " << rating_;
 }
 
 std::unique_ptr<Articol> Rochie::clone() const

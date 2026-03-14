@@ -27,6 +27,11 @@ add_executable(${MAIN_EXECUTABLE_NAME}
     src/Pantalon.cpp
     src/Personaj.cpp
     src/Rochie.cpp
+    src/Tinuta.cpp
+    src/Quest.cpp
+    src/StrategieRecomandare.cpp
+    src/Observer.cpp
+    src/TinutaBuilder.cpp
 )
 
 if(COMMAND set_compiler_flags)

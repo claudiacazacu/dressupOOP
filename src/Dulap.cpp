@@ -127,3 +127,65 @@ const std::list<std::unique_ptr<Articol>> &Dulap::GetArticole() const noexcept
 {
     return articole_;
 }
+
+// Implementări pentru filtrare și sortare după raritate/rating
+std::vector<std::shared_ptr<Articol>> Dulap::FiltreazaDupaRaritate(const std::string &raritate) const
+{
+    std::vector<std::shared_ptr<Articol>> rezultate;
+    for (const auto& articol : articole_) {
+        if (articol->GetRaritate() == raritate) {
+            rezultate.push_back(std::shared_ptr<Articol>(articol->clone().release()));
+        }
+    }
+    return rezultate;
+}
+
+std::vector<std::shared_ptr<Articol>> Dulap::SorteazaDupaRating(bool descrescator) const
+{
+    std::vector<std::shared_ptr<Articol>> rezultate;
+    for (const auto& articol : articole_) {
+        rezultate.push_back(std::shared_ptr<Articol>(articol->clone().release()));
+    }
+
+    std::sort(rezultate.begin(), rezultate.end(),
+        [descrescator](const std::shared_ptr<Articol>& a, const std::shared_ptr<Articol>& b) {
+            return descrescator ? (a->GetRating() > b->GetRating()) : (a->GetRating() < b->GetRating());
+        });
+
+    return rezultate;
+}
+
+std::vector<std::shared_ptr<Articol>> Dulap::SorteazaDupaPret(bool descrescator) const
+{
+    std::vector<std::shared_ptr<Articol>> rezultate;
+    for (const auto& articol : articole_) {
+        rezultate.push_back(std::shared_ptr<Articol>(articol->clone().release()));
+    }
+
+    std::sort(rezultate.begin(), rezultate.end(),
+        [descrescator](const std::shared_ptr<Articol>& a, const std::shared_ptr<Articol>& b) {
+            return descrescator ? (a->GetPret() > b->GetPret()) : (a->GetPret() < b->GetPret());
+        });
+
+    return rezultate;
+}
+
+std::vector<std::shared_ptr<Articol>> Dulap::RecomandaArticolePremium() const
+{
+    std::vector<std::shared_ptr<Articol>> rezultate;
+    for (const auto& articol : articole_) {
+        // Considerăm premium articolele cu raritate Epic/Legendary sau rating > 4.0
+        if (articol->GetRaritate() == "Epic" || articol->GetRaritate() == "Legendary" ||
+            articol->GetRating() >= 4.0) {
+            rezultate.push_back(std::shared_ptr<Articol>(articol->clone().release()));
+        }
+    }
+
+    // Sortează după rating descrescător
+    std::sort(rezultate.begin(), rezultate.end(),
+        [](const std::shared_ptr<Articol>& a, const std::shared_ptr<Articol>& b) {
+            return a->GetRating() > b->GetRating();
+        });
+
+    return rezultate;
+}
