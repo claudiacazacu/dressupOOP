@@ -13,17 +13,18 @@ else
     BIN_DIR="${BUILD_DIR}"
 fi
 
-run_valgrind() {
-    # remove --show-leak-kinds=all (and --track-origins=yes) if there are many leaks in external libs
+if [[ "${RUN_INTERACTIVE}" = true ]]; then
+    cd "${BIN_DIR}"
     valgrind --leak-check=full \
             --show-leak-kinds=all \
             --track-origins=yes \
             --error-exitcode=1 \
-            ./"${BIN_DIR}"/"${EXECUTABLE_NAME}"
-}
-
-if [[ "${RUN_INTERACTIVE}" = true ]]; then
-    run_valgrind
+            ./"${EXECUTABLE_NAME}"
 else
-    cat < "${INPUT_FILE}" | tr -d '\r' | run_valgrind
+    cd "${BIN_DIR}"
+    cat < "${INPUT_FILE}" | tr -d '\r' | valgrind --leak-check=full \
+            --show-leak-kinds=all \
+            --track-origins=yes \
+            --error-exitcode=1 \
+            ./"${EXECUTABLE_NAME}"
 fi

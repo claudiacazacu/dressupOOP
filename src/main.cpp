@@ -1,4 +1,3 @@
-#include <fstream>
 #include <iostream>
 #include <list>
 #include <memory>
@@ -21,11 +20,11 @@ int main()
 {
     try
     {
-        std::ifstream fin("tastatura.txt");
-        if (!fin.is_open())
-        {
-            throw FileOpenException("tastatura.txt");
-        }
+        // std::ifstream fin("tastatura.txt");
+        // if (!fin.is_open())
+        // {
+        //     throw FileOpenException("tastatura.txt");
+        // }
 
         GameSession &session = GameSession::Instance();
         session.SetEvenimentCurent("Gala");
@@ -44,7 +43,7 @@ int main()
         istoricPreturi.Adauga(25);
 
         std::string comanda;
-        while (fin >> comanda)
+        while (std::cin >> comanda)
         {
             std::cout << "\n>>> Procesare comanda: " << comanda << "\n";
 
@@ -59,21 +58,21 @@ int main()
             else if (comanda == "SET_EVENIMENT")
             {
                 std::string eveniment;
-                fin >> eveniment;
+                std::cin >> eveniment;
                 session.SetEvenimentCurent(eveniment);
                 std::cout << "Eveniment curent setat la: " << session.GetEvenimentCurent() << "\n";
             }
             else if (comanda == "SET_SEZON")
             {
                 std::string sezon;
-                fin >> sezon;
+                std::cin >> sezon;
                 session.SetSezonPreferat(sezon);
                 std::cout << "Sezon preferat setat la: " << session.GetSezonPreferat() << "\n";
             }
             else if (comanda == "CUMPARA")
             {
                 std::string numeArticol;
-                fin >> numeArticol;
+                std::cin >> numeArticol;
                 std::cout << "Incerc sa cumpar: " << numeArticol << "\n";
 
                 std::unique_ptr<Articol> articol = shop.ExtrageArticol(numeArticol);
@@ -84,7 +83,7 @@ int main()
             else if (comanda == "AFISEAZA_SEZON")
             {
                 std::string sezon;
-                fin >> sezon;
+                std::cin >> sezon;
                 player.AfiseazaEchipamentDeSezon(sezon, std::cout);
             }
             else if (comanda == "RECOMANDA_PENTRU_EVENT")
@@ -125,7 +124,7 @@ int main()
             }
             else
             {
-                throw InvalidInputException("Comanda necunoscuta in tastatura.txt: " + comanda);
+                throw InvalidInputException("Comanda necunoscuta: " + comanda);
             }
         }
 
