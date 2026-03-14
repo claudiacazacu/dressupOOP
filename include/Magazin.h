@@ -20,5 +20,7 @@ public:
     void Afiseaza(std::ostream &os) const;
     std::unique_ptr<Articol> ExtrageArticol(const std::string &nume);
 
+    const std::list<std::unique_ptr<Articol>>& GetArticole() const noexcept { return articole_; }
+
     static size_t TotalArticole() noexcept { return totalArticoleMagazin_; }
 };

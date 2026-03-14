@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <fstream>
 
 #include "Animal.h"
 #include "Articol.h"
@@ -11,27 +12,48 @@
 #include "GameSession.h"
 #include "Haina.h"
 #include "Magazin.h"
+#include "Observer.h"
 #include "Pantalon.h"
 #include "Personaj.h"
+#include "Quest.h"
 #include "Rochie.h"
+#include "StrategieRecomandare.h"
 #include "TemplateUtils.h"
+#include "Tinuta.h"
+#include "TinutaBuilder.h"
 
 int main()
 {
     try
     {
-        // std::ifstream fin("tastatura.txt");
-        // if (!fin.is_open())
-        // {
-        //     throw FileOpenException("tastatura.txt");
-        // }
+        std::ifstream fin("tastatura.txt");
+        if (!fin.is_open())
+        {
+            throw FileOpenException("tastatura.txt");
+        }
 
         GameSession &session = GameSession::Instance();
         session.SetEvenimentCurent("Gala");
         session.SetSezonPreferat("Vara");
 
+        // Adaugă observatori pentru GameSession
+        auto personajObserver = std::make_shared<PersonajObserver>("Claudy");
+        auto magazinObserver = std::make_shared<MagazinObserver>("Magazinul Jocului");
+        session.Attach(personajObserver);
+        session.Attach(magazinObserver);
+
         Magazin shop("Magazinul Jocului", "magazin.txt");
         Personaj player("Claudy", "Romanian", 1, 350);
+
+        // Inițializează strategii de recomandare
+        auto strategiePret = std::make_shared<StrategiePretMinimizat>();
+        auto strategieEleganta = std::make_shared<StrategieElegantaMaximizata>();
+        auto strategieSezon = std::make_shared<StrategieSezonPotrivit>();
+        RecomandatorTinute recomandator(strategiePret);
+
+        // Creează o ținută de test
+        Tinuta tinutaTest("Tinuta Test");
+        TinutaBuilder builder;
 
         ColectieTematica<std::string> wishlist("Wishlist nume articole");
         wishlist.Adauga("Rochie1_mag");
@@ -43,7 +65,7 @@ int main()
         istoricPreturi.Adauga(25);
 
         std::string comanda;
-        while (std::cin >> comanda)
+        while (fin >> comanda)
         {
             std::cout << "\n>>> Procesare comanda: " << comanda << "\n";
 
@@ -58,21 +80,21 @@ int main()
             else if (comanda == "SET_EVENIMENT")
             {
                 std::string eveniment;
-                std::cin >> eveniment;
+                fin >> eveniment;
                 session.SetEvenimentCurent(eveniment);
                 std::cout << "Eveniment curent setat la: " << session.GetEvenimentCurent() << "\n";
             }
             else if (comanda == "SET_SEZON")
             {
                 std::string sezon;
-                std::cin >> sezon;
+                fin >> sezon;
                 session.SetSezonPreferat(sezon);
                 std::cout << "Sezon preferat setat la: " << session.GetSezonPreferat() << "\n";
             }
             else if (comanda == "CUMPARA")
             {
                 std::string numeArticol;
-                std::cin >> numeArticol;
+                fin >> numeArticol;
                 std::cout << "Incerc sa cumpar: " << numeArticol << "\n";
 
                 std::unique_ptr<Articol> articol = shop.ExtrageArticol(numeArticol);
@@ -83,7 +105,7 @@ int main()
             else if (comanda == "AFISEAZA_SEZON")
             {
                 std::string sezon;
-                std::cin >> sezon;
+                fin >> sezon;
                 player.AfiseazaEchipamentDeSezon(sezon, std::cout);
             }
             else if (comanda == "RECOMANDA_PENTRU_EVENT")
@@ -117,6 +139,134 @@ int main()
 
                 std::cout << "Elemente wishlist care contin 'mag': " << numeFavorite << "\n";
                 std::cout << "Preturi favorite >= 60: " << preturiMari << "\n";
+            }
+            else if (comanda == "TEST_STRATEGII")
+            {
+                std::cout << "Testare strategii de recomandare:\n";
+                std::cout << "Strategie curenta: " << recomandator.GetNumeStrategie() << "\n";
+
+                recomandator.SetStrategie(strategiePret);
+                std::cout << "Schimbat la: " << recomandator.GetNumeStrategie() << "\n";
+                auto tinutePret = recomandator.GenereazaRecomandari(player, session.GetEvenimentCurent());
+                std::cout << "Recomandari cu strategie pret: " << tinutePret.size() << " tinute\n";
+
+                recomandator.SetStrategie(strategieEleganta);
+                std::cout << "Schimbat la: " << recomandator.GetNumeStrategie() << "\n";
+                auto tinuteEleganta = recomandator.GenereazaRecomandari(player, session.GetEvenimentCurent());
+                std::cout << "Recomandari cu strategie eleganta: " << tinuteEleganta.size() << " tinute\n";
+
+                recomandator.SetStrategie(strategieSezon);
+                std::cout << "Schimbat la: " << recomandator.GetNumeStrategie() << "\n";
+                auto tinuteSezon = recomandator.GenereazaRecomandari(player, session.GetEvenimentCurent());
+                std::cout << "Recomandari cu strategie sezon: " << tinuteSezon.size() << " tinute\n";
+            }
+            else if (comanda == "TEST_TINUTA")
+            {
+                std::cout << "Testare functionalitati Tinuta:\n";
+
+                // Adaugă articole la ținuta de test
+                if (!player.GetDulap().GetArticole().empty()) {
+                    auto it = player.GetDulap().GetArticole().begin();
+                    tinutaTest.AdaugaArticol(std::shared_ptr<Articol>((*it)->clone().release()));
+                    std::cout << "Adaugat articol la tinuta\n";
+                }
+
+                std::cout << tinutaTest << "\n";
+
+                // Testează eliminare articol
+                if (!tinutaTest.GetArticole().empty()) {
+                    std::string numePrimul = tinutaTest.GetArticole()[0]->GetNume();
+                    if (tinutaTest.EliminaArticol(numePrimul)) {
+                        std::cout << "Eliminat articolul: " << numePrimul << "\n";
+                    }
+                }
+
+                // Testează golire
+                tinutaTest.Goleste();
+                std::cout << "Tinuta golita. Numar articole ramas: " << tinutaTest.GetNumarArticole() << "\n";
+            }
+            else if (comanda == "TEST_BUILDER")
+            {
+                std::cout << "Testare TinutaBuilder:\n";
+
+                builder.Reset();
+                std::cout << "Builder resetat\n";
+
+                builder.SetNume("Tinuta Custom");
+                std::cout << "Setat nume: Tinuta Custom\n";
+
+                // Adaugă articole folosind metodele specializate
+                if (!player.GetDulap().GetArticole().empty()) {
+                    for (const auto& articol : player.GetDulap().GetArticole()) {
+                        if (dynamic_cast<const Imbracaminte*>(articol.get())) {
+                            builder.AdaugaImbracaminte(std::shared_ptr<Articol>(articol->clone().release()));
+                            std::cout << "Adaugat imbracaminte\n";
+                            break;
+                        }
+                    }
+                }
+
+                // Adaugă încălțăminte dacă există
+                for (const auto& articol : shop.GetArticole()) {
+                    if (dynamic_cast<const Incaltaminte*>(articol.get())) {
+                        builder.AdaugaIncaltaminte(std::shared_ptr<Articol>(articol->clone().release()));
+                        std::cout << "Adaugat incaltaminte\n";
+                        break;
+                    }
+                }
+
+                // Adaugă accesoriu dacă există
+                for (const auto& articol : shop.GetArticole()) {
+                    if (dynamic_cast<const Accesoriu*>(articol.get())) {
+                        builder.AdaugaAccesoriu(std::shared_ptr<Articol>(articol->clone().release()));
+                        std::cout << "Adaugat accesoriu\n";
+                        break;
+                    }
+                }
+
+                builder.AfiseazaStare(std::cout);
+
+                if (builder.EsteValida()) {
+                    Tinuta tinutaNoua = builder.Build();
+                    std::cout << "Tinuta construita cu succes:\n" << tinutaNoua << "\n";
+                } else {
+                    std::cout << "Tinuta nu este valida\n";
+                }
+            }
+            else if (comanda == "TEST_QUESTURI")
+            {
+                std::cout << "Testare sistem quest-uri:\n";
+
+                player.ActualizeazaQuesturi();
+                player.AfiseazaQuesturiActive(std::cout);
+                player.AfiseazaQuesturiCompletate(std::cout);
+
+                // Marchează primul quest ca completat dacă există
+                // (doar pentru demonstrație)
+                std::cout << "Marcare quest completat (demonstratie)\n";
+            }
+            else if (comanda == "TEST_FILTRARE")
+            {
+                std::cout << "Testare filtrare articole:\n";
+
+                auto articoleRare = player.GetDulap().FiltreazaDupaRaritate("Rar");
+                std::cout << "Articole rare: " << articoleRare.size() << "\n";
+
+                auto articoleSortateRating = player.GetDulap().SorteazaDupaRating();
+                std::cout << "Articole sortate dupa rating: " << articoleSortateRating.size() << "\n";
+
+                auto articoleSortatePret = player.GetDulap().SorteazaDupaPret();
+                std::cout << "Articole sortate dupa pret: " << articoleSortatePret.size() << "\n";
+
+                auto articolePremium = player.GetDulap().RecomandaArticolePremium();
+                std::cout << "Articole premium recomandate: " << articolePremium.size() << "\n";
+            }
+            else if (comanda == "TEST_OBSERVER")
+            {
+                std::cout << "Testare sistem Observer:\n";
+                std::cout << "Schimbare eveniment pentru a declansa notificari...\n";
+                session.SetEvenimentCurent("Petrecere");
+                std::cout << "Eveniment schimbat la: " << session.GetEvenimentCurent() << "\n";
             }
             else if (comanda == "EXIT")
             {
