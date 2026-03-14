@@ -22,6 +22,7 @@ Jucătorul poate:
 
 Articolele sunt organizate într-o ierarhie de clase:
 
+```
 Articol
 │
 ├─ Imbracaminte
@@ -32,6 +33,7 @@ Articol
 ├─ Incaltaminte
 ├─ Accesoriu
 └─ Animal
+```
 
 Programul folosește **polimorfism**, **smart pointers** și **excepții personalizate** pentru a gestiona articolele.
 
