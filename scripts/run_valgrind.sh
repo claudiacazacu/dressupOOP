@@ -10,7 +10,7 @@ if [[ -n "$1" ]]; then
 elif [[ -d "install_dir/bin" ]]; then
     BIN_DIR="install_dir/bin"
 else
-    BIN_DIR="${BUILD_DIR}"
+    BIN_DIR="${BUILD_DIR}/bin"
 fi
 
 if [[ "${RUN_INTERACTIVE}" = true ]]; then
