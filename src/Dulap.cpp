@@ -1,5 +1,6 @@
 #include "Dulap.h"
 #include "Exceptions.h"
+#include <utility>
 
 Dulap::Dulap(int capacitate, const std::string &proprietar)
     : capacitate_(capacitate), proprietar_(proprietar)
@@ -13,9 +14,10 @@ Dulap::Dulap(int capacitate, const std::string &proprietar)
 Dulap::Dulap(const Dulap &other)
     : capacitate_(other.capacitate_), proprietar_(other.proprietar_)
 {
-    for (const auto &a : other.articole_)
+    std::list<std::unique_ptr<Articol>>::const_iterator it;
+    for (it = other.articole_.begin(); it != other.articole_.end(); ++it)
     {
-        articole_.push_back(a->clone());
+        articole_.push_back((*it)->clone());
     }
 }
 
@@ -44,6 +46,7 @@ bool Dulap::AdaugaArticol(std::unique_ptr<Articol> articol)
     {
         throw InvalidInputException("Nu se poate adauga un articol null in dulap");
     }
+
     if (EstePlin())
     {
         throw InventoryException("Dulapul este plin");
@@ -56,26 +59,29 @@ bool Dulap::AdaugaArticol(std::unique_ptr<Articol> articol)
 int Dulap::CalculeazaValoareTotala() const noexcept
 {
     int suma = 0;
-    for (const auto &a : articole_)
+    std::list<std::unique_ptr<Articol>>::const_iterator it;
+    for (it = articole_.begin(); it != articole_.end(); ++it)
     {
-        suma += a->GetPret();
+        suma += (*it)->GetPret();
     }
     return suma;
 }
 
 void Dulap::Afiseaza(std::ostream &os) const
 {
-    os << "Dulapul lui " << proprietar_ << " (capacitate " << capacitate_ << ")\n";
+    os << "Dulapul lui " << proprietar_ << "\n";
+
     if (articole_.empty())
     {
         os << "  (gol)\n";
         return;
     }
 
-    for (const auto &a : articole_)
+    std::list<std::unique_ptr<Articol>>::const_iterator it;
+    for (it = articole_.begin(); it != articole_.end(); ++it)
     {
         os << "  ";
-        a->Afiseaza(os);
+        (*it)->Afiseaza(os);
         os << "\n";
     }
 }
@@ -83,17 +89,20 @@ void Dulap::Afiseaza(std::ostream &os) const
 void Dulap::AfiseazaPotrivitePentruEveniment(const std::string &eveniment, std::ostream &os) const
 {
     os << "Articole potrivite pentru evenimentul \"" << eveniment << "\":\n";
+
     bool gasit = false;
-    for (const auto &a : articole_)
+    std::list<std::unique_ptr<Articol>>::const_iterator it;
+    for (it = articole_.begin(); it != articole_.end(); ++it)
     {
-        if (a->SePotrivesteLaEveniment(eveniment))
+        if ((*it)->SePotrivesteLaEveniment(eveniment))
         {
             os << "  ";
-            a->Afiseaza(os);
+            (*it)->Afiseaza(os);
             os << "\n";
             gasit = true;
         }
     }
+
     if (!gasit)
     {
         os << "  Niciun articol potrivit.\n";
@@ -103,9 +112,10 @@ void Dulap::AfiseazaPotrivitePentruEveniment(const std::string &eveniment, std::
 size_t Dulap::NumarArticolePentruEveniment(const std::string &eveniment) const noexcept
 {
     size_t total = 0;
-    for (const auto &a : articole_)
+    std::list<std::unique_ptr<Articol>>::const_iterator it;
+    for (it = articole_.begin(); it != articole_.end(); ++it)
     {
-        if (a->SePotrivesteLaEveniment(eveniment))
+        if ((*it)->SePotrivesteLaEveniment(eveniment))
         {
             ++total;
         }
@@ -113,8 +123,7 @@ size_t Dulap::NumarArticolePentruEveniment(const std::string &eveniment) const n
     return total;
 }
 
-std::ostream &operator<<(std::ostream &os, const Dulap &d)
+const std::list<std::unique_ptr<Articol>> &Dulap::GetArticole() const noexcept
 {
-    d.Afiseaza(os);
-    return os;
+    return articole_;
 }

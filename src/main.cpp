@@ -1,8 +1,12 @@
 #include <fstream>
 #include <iostream>
+#include <list>
+#include <memory>
 #include <string>
 #include <vector>
+
 #include "Animal.h"
+#include "Articol.h"
 #include "ArticolDerivate.h"
 #include "Exceptions.h"
 #include "GameSession.h"
@@ -71,8 +75,10 @@ int main()
                 std::string numeArticol;
                 fin >> numeArticol;
                 std::cout << "Incerc sa cumpar: " << numeArticol << "\n";
-                auto articol = shop.ExtrageArticol(numeArticol);
+
+                std::unique_ptr<Articol> articol = shop.ExtrageArticol(numeArticol);
                 player.Cumpara(std::move(articol));
+
                 std::cout << "Cumparare efectuata cu succes.\n";
             }
             else if (comanda == "AFISEAZA_SEZON")
@@ -96,10 +102,19 @@ int main()
                 istoricPreturi.Afiseaza(std::cout);
                 std::cout << "\n";
 
-                const auto numeFavorite = NumarareDupaCriteriu(
-                    wishlist.Elemente(), [](const std::string &nume) { return nume.find("mag") != std::string::npos; });
-                const auto preturiMari = NumarareDupaCriteriu(
-                    istoricPreturi.Elemente(), [](int pret) { return pret >= 60; });
+                size_t numeFavorite = NumarareDupaCriteriu(
+                    wishlist.Elemente(),
+                    [](const std::string &nume)
+                    {
+                        return nume.find("mag") != std::string::npos;
+                    });
+
+                size_t preturiMari = NumarareDupaCriteriu(
+                    istoricPreturi.Elemente(),
+                    [](int pret)
+                    {
+                        return pret >= 60;
+                    });
 
                 std::cout << "Elemente wishlist care contin 'mag': " << numeFavorite << "\n";
                 std::cout << "Preturi favorite >= 60: " << preturiMari << "\n";
@@ -119,39 +134,64 @@ int main()
         std::cout << "Articole ramase in magazin (static): " << Magazin::TotalArticole() << "\n";
         std::cout << "Personaje create (static): " << Personaj::TotalPersonaje() << "\n";
 
-        const auto &articole = player.GetDulap().GetArticole();
-        for (const auto &articol : articole)
+        const std::list<std::unique_ptr<Articol>> &articole = player.GetDulap().GetArticole();
+        std::list<std::unique_ptr<Articol>>::const_iterator it;
+
+        for (it = articole.begin(); it != articole.end(); ++it)
         {
+            const Articol *articol = (*it).get();
+
             std::cout << "Analiza articol: " << articol->GetNume() << "\n";
             std::cout << "  - Tip din ierarhie: " << articol->Tip() << "\n";
             std::cout << "  - Potrivit pentru evenimentul curent? "
                       << (articol->SePotrivesteLaEveniment(session.GetEvenimentCurent()) ? "Da" : "Nu") << "\n";
 
-            if (const auto *haina = dynamic_cast<const Haina *>(articol.get()))
+            const Haina *haina = dynamic_cast<const Haina *>(articol);
+            if (haina != nullptr)
             {
                 std::cout << "  [Haina] Material: " << haina->GetMaterial()
                           << ", Gluga: " << (haina->AreGluga() ? "Da" : "Nu") << "\n";
             }
-            else if (const auto *pantalon = dynamic_cast<const Pantalon *>(articol.get()))
+            else
             {
-                std::cout << "  [Pantalon] Lungime: " << pantalon->GetLungime() << "\n";
-            }
-            else if (const auto *animal = dynamic_cast<const Animal *>(articol.get()))
-            {
-                std::cout << "  [Animal] Specie: " << animal->GetSpecie() << "\n";
-            }
-            else if (const auto *incalt = dynamic_cast<const Incaltaminte *>(articol.get()))
-            {
-                std::cout << "  [Incaltaminte] Marime: " << incalt->GetMarime() << "\n";
-            }
-            else if (const auto *acc = dynamic_cast<const Accesoriu *>(articol.get()))
-            {
-                std::cout << "  [Accesoriu] Categorie: " << acc->GetCategorie() << "\n";
-            }
-            else if (const auto *rochie = dynamic_cast<const Rochie *>(articol.get()))
-            {
-                std::cout << "  [Rochie] Croiala: " << rochie->GetCroiala()
-                          << ", Eleganta: " << (rochie->EsteEleganta() ? "Da" : "Nu") << "\n";
+                const Pantalon *pantalon = dynamic_cast<const Pantalon *>(articol);
+                if (pantalon != nullptr)
+                {
+                    std::cout << "  [Pantalon] Lungime: " << pantalon->GetLungime() << "\n";
+                }
+                else
+                {
+                    const Animal *animal = dynamic_cast<const Animal *>(articol);
+                    if (animal != nullptr)
+                    {
+                        std::cout << "  [Animal] Specie: " << animal->GetSpecie() << "\n";
+                    }
+                    else
+                    {
+                        const Incaltaminte *incalt = dynamic_cast<const Incaltaminte *>(articol);
+                        if (incalt != nullptr)
+                        {
+                            std::cout << "  [Incaltaminte] Marime: " << incalt->GetMarime() << "\n";
+                        }
+                        else
+                        {
+                            const Accesoriu *acc = dynamic_cast<const Accesoriu *>(articol);
+                            if (acc != nullptr)
+                            {
+                                std::cout << "  [Accesoriu] Categorie: " << acc->GetCategorie() << "\n";
+                            }
+                            else
+                            {
+                                const Rochie *rochie = dynamic_cast<const Rochie *>(articol);
+                                if (rochie != nullptr)
+                                {
+                                    std::cout << "  [Rochie] Croiala: " << rochie->GetCroiala()
+                                              << ", Eleganta: " << (rochie->EsteEleganta() ? "Da" : "Nu") << "\n";
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -53,18 +53,6 @@ void Magazin::Afiseaza(std::ostream &os) const
     }
 }
 
-const Articol *Magazin::CautaArticol(const std::string &nume) const
-{
-    for (const auto &a : articole_)
-    {
-        if (a->GetNume() == nume)
-        {
-            return a.get();
-        }
-    }
-    return nullptr;
-}
-
 std::unique_ptr<Articol> Magazin::ExtrageArticol(const std::string &nume)
 {
     for (auto it = articole_.begin(); it != articole_.end(); ++it)

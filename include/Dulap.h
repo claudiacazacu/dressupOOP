@@ -7,12 +7,10 @@
 class Dulap
 {
     std::list<std::unique_ptr<Articol>> articole_;
-    int capacitate_ = 0;
+    int capacitate_;
     std::string proprietar_;
 
 public:
-    friend std::ostream &operator<<(std::ostream &os, const Dulap &d);
-
     explicit Dulap(int capacitate = 20, const std::string &proprietar = "Anonim");
     Dulap(const Dulap &other);
     Dulap &operator=(Dulap other);
@@ -21,7 +19,6 @@ public:
     void swap(Dulap &other) noexcept;
 
     bool EstePlin() const noexcept;
-    bool EsteGol() const noexcept { return articole_.empty(); }
     bool AdaugaArticol(std::unique_ptr<Articol> articol);
 
     int CalculeazaValoareTotala() const noexcept;
@@ -29,5 +26,5 @@ public:
     void AfiseazaPotrivitePentruEveniment(const std::string &eveniment, std::ostream &os) const;
     size_t NumarArticolePentruEveniment(const std::string &eveniment) const noexcept;
 
-    const std::list<std::unique_ptr<Articol>> &GetArticole() const noexcept { return articole_; }
+    const std::list<std::unique_ptr<Articol>> &GetArticole() const noexcept;
 };

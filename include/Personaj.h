@@ -1,15 +1,17 @@
 #pragma once
 #include <iostream>
+#include <memory>
 #include <string>
 #include "Dulap.h"
+#include "Articol.h"
 
 class Personaj
 {
     std::string nume_;
     std::string nationalitate_;
-    int nivel_ = 1;
+    int nivel_;
     Dulap dulap_;
-    int sold_ = 0;
+    int sold_;
     static int totalPersonaje_;
 
 public:
@@ -26,7 +28,6 @@ public:
     void AfiseazaTinutePentruEveniment(const std::string &eveniment, std::ostream &os) const;
     void AfiseazaAnalizaInventar(const std::string &eveniment, std::ostream &os) const;
 
-    int GetSold() const noexcept { return sold_; }
-    const Dulap &GetDulap() const noexcept { return dulap_; }
-    static int TotalPersonaje() noexcept { return totalPersonaje_; }
+    const Dulap &GetDulap() const noexcept;
+    static int TotalPersonaje() noexcept;
 };

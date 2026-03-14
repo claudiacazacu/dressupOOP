@@ -19,11 +19,6 @@ public:
         elemente_.push_back(valoare);
     }
 
-    bool Contine(const T &valoare) const
-    {
-        return std::find(elemente_.begin(), elemente_.end(), valoare) != elemente_.end();
-    }
-
     const std::vector<T> &Elemente() const noexcept
     {
         return elemente_;

@@ -1,21 +1,36 @@
-#pragma once
-#include "ArticolDerivate.h"
+#include "Pantalon.h"
+#include "Exceptions.h"
 
-class Pantalon : public Imbracaminte
+Pantalon::Pantalon(const std::string &nume,
+                   const std::string &culoare,
+                   int pret,
+                   const std::string &sezon,
+                   int lungime)
+    : Imbracaminte(nume, culoare, pret, sezon), lungime_(lungime)
 {
-    int lungime_;
+    if (lungime_ <= 0)
+    {
+        throw InvalidInputException("Pantalonul trebuie sa aiba lungime pozitiva");
+    }
+}
 
-public:
-    Pantalon(const std::string &nume,
-             const std::string &culoare,
-             int pret,
-             const std::string &sezon,
-             int lungime);
+void Pantalon::AfiseazaImpl(std::ostream &os) const
+{
+    os << "[Pantalon] " << nume_ << " | Pret: " << pret_
+       << " | Culoare: " << culoare_ << " | Sezon: " << GetSezon()
+       << " | Lungime: " << lungime_;
+}
 
-    void AfiseazaImpl(std::ostream &os) const override;
-    std::unique_ptr<Articol> clone() const override;
-    std::string Tip() const override { return "Pantalon"; }
-    bool SePotrivesteLaEveniment(const std::string &eveniment) const override;
+std::unique_ptr<Articol> Pantalon::clone() const
+{
+    return std::make_unique<Pantalon>(*this);
+}
 
-    int GetLungime() const noexcept { return lungime_; }
-};
+bool Pantalon::SePotrivesteLaEveniment(const std::string &eveniment) const
+{
+    if (eveniment == "Birou")
+    {
+        return lungime_ >= 90;
+    }
+    return true;
+}

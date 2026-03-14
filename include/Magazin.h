@@ -18,9 +18,7 @@ public:
 
     void IncarcaDinFisier(const std::string &fisierArticole);
     void Afiseaza(std::ostream &os) const;
-    const Articol *CautaArticol(const std::string &nume) const;
     std::unique_ptr<Articol> ExtrageArticol(const std::string &nume);
-    size_t NumarArticole() const noexcept { return articole_.size(); }
 
     static size_t TotalArticole() noexcept { return totalArticoleMagazin_; }
 };

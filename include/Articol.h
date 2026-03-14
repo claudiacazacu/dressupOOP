@@ -25,5 +25,4 @@ public:
 
     int GetPret() const noexcept { return pret_; }
     const std::string &GetNume() const noexcept { return nume_; }
-    const std::string &GetCuloare() const noexcept { return culoare_; }
 };
