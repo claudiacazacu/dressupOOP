@@ -1,22 +1,29 @@
 #pragma once
+#include <iostream>
+#include <memory>
 #include <string>
 
-class Articol {
-
+class Articol
+{
 protected:
-
-    int id;
-    std::string nume;
-    int pret;
+    std::string nume_;
+    std::string culoare_;
+    int pret_ = 0;
 
 public:
+    friend std::ostream &operator<<(std::ostream &os, const Articol &a);
 
-    Articol(int id, std::string nume, int pret);
+    Articol(std::string nume, std::string culoare, int pret);
     virtual ~Articol() = default;
 
-    virtual void afiseaza() const;
+    void Afiseaza(std::ostream &os) const;
 
-    int getPret() const;
-    int getId() const;
+    virtual void AfiseazaImpl(std::ostream &os) const = 0;
+    virtual std::unique_ptr<Articol> clone() const = 0;
+    virtual std::string Tip() const = 0;
+    virtual bool SePotrivesteLaEveniment(const std::string &eveniment) const = 0;
 
+    int GetPret() const noexcept { return pret_; }
+    const std::string &GetNume() const noexcept { return nume_; }
+    const std::string &GetCuloare() const noexcept { return culoare_; }
 };

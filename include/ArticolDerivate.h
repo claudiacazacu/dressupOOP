@@ -1,16 +1,46 @@
 #pragma once
 #include "Articol.h"
+#include <iostream>
+#include <memory>
 #include <string>
 
-class ArticolDerivate : public Articol {
-
+class Imbracaminte : public Articol
+{
 protected:
-    std::string material;
+    std::string sezon_;
 
 public:
-    ArticolDerivate(int id, const std::string& nume, int pret, const std::string& material);
+    Imbracaminte(const std::string &nume, const std::string &culoare, int pret, const std::string &sezon);
 
-    void afiseaza() const override;
+    void AfiseazaImpl(std::ostream &os) const override;
+    std::unique_ptr<Articol> clone() const override;
+    std::string Tip() const override;
+    const std::string &GetSezon() const noexcept { return sezon_; }
+    bool SePotrivesteLaEveniment(const std::string &eveniment) const override;
+};
 
-    std::string getMaterial() const;
+class Incaltaminte : public Articol
+{
+    int marime_;
+
+public:
+    Incaltaminte(const std::string &nume, const std::string &culoare, int pret, int marime);
+    void AfiseazaImpl(std::ostream &os) const override;
+    std::unique_ptr<Articol> clone() const override;
+    std::string Tip() const override;
+    int GetMarime() const noexcept { return marime_; }
+    bool SePotrivesteLaEveniment(const std::string &eveniment) const override;
+};
+
+class Accesoriu : public Articol
+{
+    std::string categorie_;
+
+public:
+    Accesoriu(const std::string &nume, const std::string &culoare, int pret, const std::string &categorie);
+    void AfiseazaImpl(std::ostream &os) const override;
+    std::unique_ptr<Articol> clone() const override;
+    std::string Tip() const override;
+    const std::string &GetCategorie() const noexcept { return categorie_; }
+    bool SePotrivesteLaEveniment(const std::string &eveniment) const override;
 };

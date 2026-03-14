@@ -1,5 +1,7 @@
-Haina 1 Geaca 120
-Pantalon 2 Blugi 90
-Rochie 3 Eleganta 150
-Haina 4 Palton 200
-Pantalon 5 Chinos 80
+HAINA Tricou1_mag Negru 10 Vara Bumbac 0
+HAINA Hanorac1_mag Negru 25 Iarna Fleece 1
+PANTALON Pantaloni1_mag Gri 20 Vara 100
+ANIMAL PisicaPlus Roz 30 Plus
+INCALTAMINTE Tenisi1_mag Alb 18 38
+ACCESORIU Ceas1_mag Argintiu 60 Elegant
+ROCHIE Rochie1_mag Rosu 120 Vara Sirena 1

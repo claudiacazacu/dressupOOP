@@ -1,64 +1,87 @@
 #include "Magazin.h"
-#include "Haina.h"
-#include "Pantalon.h"
-#include "Rochie.h"
+#include "ArticolFactory.h"
+#include "Exceptions.h"
 #include <fstream>
-#include <iostream>
+#include <string>
 
-void Magazin::incarcaDinFisier(const std::string& file) {
+size_t Magazin::totalArticoleMagazin_ = 0;
 
-    std::ifstream f(file);
+Magazin::Magazin(const std::string &nume, const std::string &fisierArticole) : nume_(nume)
+{
+    if (nume_.empty())
+    {
+        throw InvalidInputException("Magazinul trebuie sa aiba un nume");
+    }
+    IncarcaDinFisier(fisierArticole);
+}
 
-    std::string tip;
-
-    while(f >> tip) {
-
-        int id, pret;
-        std::string nume;
-
-        f >> id >> nume >> pret;
-
-        if(tip == "Haina") {
-
-            articole.push_back(
-                std::make_shared<Haina>(id,nume,pret,"iarna")
-            );
-
-        }
-
-        if(tip == "Pantalon") {
-
-            articole.push_back(
-                std::make_shared<Pantalon>(id,nume,pret,42)
-            );
-
-        }
-
-        if(tip == "Rochie") {
-
-            articole.push_back(
-                std::make_shared<Rochie>(id,nume,pret,"seara")
-            );
-
-        }
-
+void Magazin::IncarcaDinFisier(const std::string &fisierArticole)
+{
+    std::ifstream fin(fisierArticole);
+    if (!fin.is_open())
+    {
+        throw FileOpenException(fisierArticole);
     }
 
+    articole_.clear();
+    std::string linie;
+    while (std::getline(fin, linie))
+    {
+        if (linie.empty())
+        {
+            continue;
+        }
+        articole_.push_back(ArticolFactory::CreeazaDinLinie(linie));
+    }
+    totalArticoleMagazin_ = articole_.size();
 }
 
-void Magazin::afiseaza() const {
+void Magazin::Afiseaza(std::ostream &os) const
+{
+    os << "Magazin: " << nume_ << "\n";
+    if (articole_.empty())
+    {
+        os << "  (fara articole)\n";
+        return;
+    }
 
-    for(auto& a : articole)
-        a->afiseaza();
-
+    for (const auto &a : articole_)
+    {
+        os << "  ";
+        a->Afiseaza(os);
+        os << "\n";
+    }
 }
 
-std::shared_ptr<Articol> Magazin::getArticol(int id) {
+const Articol *Magazin::CautaArticol(const std::string &nume) const
+{
+    for (const auto &a : articole_)
+    {
+        if (a->GetNume() == nume)
+        {
+            return a.get();
+        }
+    }
+    return nullptr;
+}
 
-    for(auto& a : articole)
-        if(a->getId() == id)
-            return a;
+std::unique_ptr<Articol> Magazin::ExtrageArticol(const std::string &nume)
+{
+    for (auto it = articole_.begin(); it != articole_.end(); ++it)
+    {
+        if ((*it)->GetNume() == nume)
+        {
+            auto rezultat = std::move(*it);
+            articole_.erase(it);
+            totalArticoleMagazin_ = articole_.size();
+            return rezultat;
+        }
+    }
+    throw InventoryException("Articolul \"" + nume + "\" nu exista in magazin");
+}
 
-    throw std::runtime_error("Articol inexistent");
-
+std::ostream &operator<<(std::ostream &os, const Magazin &m)
+{
+    m.Afiseaza(os);
+    return os;
 }

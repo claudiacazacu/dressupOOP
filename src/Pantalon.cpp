@@ -1,12 +1,21 @@
-#include "Pantalon.h"
-#include <iostream>
+#pragma once
+#include "ArticolDerivate.h"
 
-Pantalon::Pantalon(int id, std::string nume, int pret, int marime)
-    : Articol(id,nume,pret), marime(marime) {}
+class Pantalon : public Imbracaminte
+{
+    int lungime_;
 
-void Pantalon::afiseaza() const {
+public:
+    Pantalon(const std::string &nume,
+             const std::string &culoare,
+             int pret,
+             const std::string &sezon,
+             int lungime);
 
-    std::cout << "Pantalon ";
-    Articol::afiseaza();
+    void AfiseazaImpl(std::ostream &os) const override;
+    std::unique_ptr<Articol> clone() const override;
+    std::string Tip() const override { return "Pantalon"; }
+    bool SePotrivesteLaEveniment(const std::string &eveniment) const override;
 
-}
+    int GetLungime() const noexcept { return lungime_; }
+};

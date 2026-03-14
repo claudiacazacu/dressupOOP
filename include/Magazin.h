@@ -1,18 +1,26 @@
 #pragma once
-#include <vector>
+#include <iostream>
+#include <list>
 #include <memory>
+#include <string>
 #include "Articol.h"
 
-class Magazin {
-
-    std::vector<std::shared_ptr<Articol>> articole;
+class Magazin
+{
+    std::list<std::unique_ptr<Articol>> articole_;
+    std::string nume_;
+    static size_t totalArticoleMagazin_;
 
 public:
+    friend std::ostream &operator<<(std::ostream &os, const Magazin &m);
 
-    void incarcaDinFisier(const std::string& file);
+    explicit Magazin(const std::string &nume, const std::string &fisierArticole = "magazin.txt");
 
-    void afiseaza() const;
+    void IncarcaDinFisier(const std::string &fisierArticole);
+    void Afiseaza(std::ostream &os) const;
+    const Articol *CautaArticol(const std::string &nume) const;
+    std::unique_ptr<Articol> ExtrageArticol(const std::string &nume);
+    size_t NumarArticole() const noexcept { return articole_.size(); }
 
-    std::shared_ptr<Articol> getArticol(int id);
-
+    static size_t TotalArticole() noexcept { return totalArticoleMagazin_; }
 };

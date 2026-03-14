@@ -1,22 +1,22 @@
 #pragma once
+#include <string>
 
-class GameSession {
+class GameSession
+{
+    std::string evenimentCurent_;
+    std::string sezonPreferat_;
 
-private:
-
-    static GameSession* instance;
-
-    GameSession() {}
+    GameSession();
 
 public:
+    GameSession(const GameSession &) = delete;
+    GameSession &operator=(const GameSession &) = delete;
 
-    static GameSession& getInstance() {
+    static GameSession &Instance();
 
-        if(!instance)
-            instance = new GameSession();
+    void SetEvenimentCurent(const std::string &eveniment);
+    void SetSezonPreferat(const std::string &sezon);
 
-        return *instance;
-
-    }
-
+    const std::string &GetEvenimentCurent() const noexcept;
+    const std::string &GetSezonPreferat() const noexcept;
 };
