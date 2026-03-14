@@ -42,8 +42,8 @@ set_target_properties(${MAIN_EXECUTABLE_NAME} PROPERTIES
 install(TARGETS ${MAIN_EXECUTABLE_NAME} DESTINATION bin)
 
 install(FILES
-    data/tastatura.txt
-    data/magazin.txt
+    tastatura.txt
+    magazin.txt
     DESTINATION bin
 )
 
@@ -52,8 +52,8 @@ if(APPLE)
 endif()
 
 if(COMMAND copy_files)
-    copy_files(FILES data/tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
-    copy_files(FILES data/magazin.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+    copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+    copy_files(FILES magazin.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 else()
     configure_file(tastatura.txt ${CMAKE_BINARY_DIR}/bin/tastatura.txt COPYONLY)
     configure_file(magazin.txt ${CMAKE_BINARY_DIR}/bin/magazin.txt COPYONLY)
