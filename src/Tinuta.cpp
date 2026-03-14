@@ -113,15 +113,12 @@ bool Tinuta::EsteCompleta() const {
 
     bool areImbracaminte = false;
     bool areIncaltaminte = false;
-    bool areAccesorii = false;
 
     for (const auto& articol : articole_) {
         if (dynamic_cast<const Imbracaminte*>(articol.get())) {
             areImbracaminte = true;
         } else if (dynamic_cast<const Incaltaminte*>(articol.get())) {
             areIncaltaminte = true;
-        } else if (dynamic_cast<const Accesoriu*>(articol.get())) {
-            areAccesorii = true;
         }
     }
 
