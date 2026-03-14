@@ -16,9 +16,9 @@ public:
 
     void AfiseazaImpl(std::ostream &os) const override;
     std::unique_ptr<Articol> clone() const override;
-    std::string Tip() const override { return "Rochie"; }
+    std::string Tip() const override;
     bool SePotrivesteLaEveniment(const std::string &eveniment) const override;
 
-    const std::string &GetCroiala() const noexcept { return croiala_; }
-    bool EsteEleganta() const noexcept { return eleganta_; }
+    const std::string &GetCroiala() const noexcept;
+    bool EsteEleganta() const noexcept;
 };

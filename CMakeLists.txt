@@ -18,12 +18,15 @@ add_executable(${MAIN_EXECUTABLE_NAME}
     src/Animal.cpp
     src/Articol.cpp
     src/ArticolDerivate.cpp
+    src/ArticolFactory.cpp
     src/Dulap.cpp
     src/Exceptions.cpp
+    src/GameSession.cpp
     src/Haina.cpp
     src/Magazin.cpp
     src/Pantalon.cpp
     src/Personaj.cpp
+    src/Rochie.cpp
 )
 
 if(COMMAND set_compiler_flags)
@@ -32,7 +35,9 @@ endif()
 
 target_include_directories(${MAIN_EXECUTABLE_NAME} PRIVATE include)
 
-set_target_properties(${MAIN_EXECUTABLE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set_target_properties(${MAIN_EXECUTABLE_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
 
 install(TARGETS ${MAIN_EXECUTABLE_NAME} DESTINATION bin)
 
@@ -42,6 +47,8 @@ endif()
 
 if(COMMAND copy_files)
     copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+    copy_files(FILES magazin.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 else()
     configure_file(tastatura.txt ${CMAKE_BINARY_DIR}/bin/tastatura.txt COPYONLY)
+    configure_file(magazin.txt ${CMAKE_BINARY_DIR}/bin/magazin.txt COPYONLY)
 endif()
