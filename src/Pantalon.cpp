@@ -1,26 +1,12 @@
 #include "Pantalon.h"
 #include <iostream>
 
-Pantalon::Pantalon(const std::string &nume, const std::string &culoare, int pret, const std::string &sezon, int lungime)
-    : Imbracaminte(nume, culoare, pret, sezon), lungime_(lungime) {}
+Pantalon::Pantalon(int id, std::string nume, int pret, int marime)
+    : Articol(id,nume,pret), marime(marime) {}
 
-void Pantalon::AfiseazaImpl(std::ostream &os) const
-{
-    os << "[Pantalon] " << nume_ << " | Pret: " << pret_
-       << " | Culoare: " << culoare_ << " | Sezon: " << GetSezon()
-       << " | Lungime: " << lungime_;
-}
+void Pantalon::afiseaza() const {
 
-std::unique_ptr<Articol> Pantalon::clone() const
-{
-    return std::make_unique<Pantalon>(*this);
-}
+    std::cout << "Pantalon ";
+    Articol::afiseaza();
 
-bool Pantalon::SePotrivesteLaEveniment(const std::string &eveniment) const
-{
-    if (eveniment == "Birou")
-    {
-        return lungime_ > 80;
-    }
-    return true;
 }

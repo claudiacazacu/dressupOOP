@@ -1,21 +1,14 @@
 #pragma once
-#include "ArticolDerivate.h"
+#include "Articol.h"
 
-class Pantalon : public Imbracaminte
-{
-    int lungime_;
+class Pantalon : public Articol {
+
+    int marime;
 
 public:
-    Pantalon(const std::string &nume,
-             const std::string &culoare,
-             int pret,
-             const std::string &sezon,
-             int lungime);
 
-    void AfiseazaImpl(std::ostream &os) const override;
-    std::unique_ptr<Articol> clone() const override;
-    std::string Tip() const override { return "Pantalon"; }
-    bool SePotrivesteLaEveniment(const std::string &eveniment) const override;
+    Pantalon(int id, std::string nume, int pret, int marime);
 
-    int GetLungime() const { return lungime_; }
+    void afiseaza() const override;
+
 };

@@ -1,29 +1,16 @@
 #pragma once
-#include <list>
+#include <vector>
 #include <memory>
-#include <string>
 #include "Articol.h"
 
-class Dulap
-{
-    std::list<std::unique_ptr<Articol>> articole_;
-    int capacitate_ = 0;
-    std::string proprietar_;
+class Dulap {
+
+    std::vector<std::shared_ptr<Articol>> articole;
 
 public:
-    friend std::ostream &operator<<(std::ostream &os, const Dulap &d);
-    explicit Dulap(int capacitate = 20, const std::string &proprietar = "Anonim");
-    Dulap(const Dulap &other);
-    Dulap &operator=(Dulap other);
-    ~Dulap() = default;
 
-    void swap(Dulap &other) noexcept;
+    void adauga(std::shared_ptr<Articol> a);
 
-    bool EstePlin() const noexcept;
-    bool AdaugaArticol(std::unique_ptr<Articol> articol);
+    void afiseaza() const;
 
-    int CalculeazaValoareTotala() const noexcept;
-    void Afiseaza(std::ostream &os) const;
-
-    const std::list<std::unique_ptr<Articol>> &GetArticole() const noexcept { return articole_; }
 };

@@ -1,29 +1,27 @@
 #pragma once
 #include <exception>
 #include <string>
-#include <stdexcept>
 
-class AppException : public std::runtime_error
-{
+class BudgetException : public std::exception {
+
+    std::string mesaj;
+
 public:
-    explicit AppException(const std::string &msg) : std::runtime_error(msg) {}
+
+    BudgetException(const std::string& mesaj);
+
+    const char* what() const noexcept override;
+
 };
 
-class FileOpenException : public AppException
-{
-public:
-    explicit FileOpenException(const std::string &file)
-        : AppException("Unable to open file: " + file) {}
-};
+class ArticleNotFoundException : public std::exception {
 
-class InventoryException : public AppException
-{
-public:
-    explicit InventoryException(const std::string &msg) : AppException("Inventory error: " + msg) {}
-};
+    std::string mesaj;
 
-class InvalidInputException : public AppException
-{
 public:
-    explicit InvalidInputException(const std::string &msg) : AppException("Invalid input: " + msg) {}
+
+    ArticleNotFoundException(const std::string& mesaj);
+
+    const char* what() const noexcept override;
+
 };

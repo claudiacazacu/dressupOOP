@@ -1,59 +1,64 @@
 #include "Magazin.h"
-#include "ArticolDerivate.h"
 #include "Haina.h"
 #include "Pantalon.h"
-#include "Animal.h"
+#include "Rochie.h"
+#include <fstream>
 #include <iostream>
 
-size_t Magazin::totalArticoleMagazin = 0;
+void Magazin::incarcaDinFisier(const std::string& file) {
 
-Magazin::Magazin(const std::string &nume) : nume_(nume)
-{
-    articole_.push_back(std::make_unique<Haina>("Tricou1_mag", "Negru", 10, "Vara", "Bumbac", false));
-    articole_.push_back(std::make_unique<Haina>("Hanorac1_mag", "Negru", 25, "Iarna", "Fleece", true));
+    std::ifstream f(file);
 
-    articole_.push_back(std::make_unique<Pantalon>("Pantaloni1_mag", "Gri", 20, "Vara", 100));
+    std::string tip;
 
-    articole_.push_back(std::make_unique<Animal>("Pisica de plus", "Roz", 30, "Plus"));
+    while(f >> tip) {
 
-    totalArticoleMagazin = articole_.size();
-}
+        int id, pret;
+        std::string nume;
 
-void Magazin::Afiseaza(std::ostream &os) const
-{
-    os << "Magazin: " << nume_ << "\n";
-    for (const auto &a : articole_)
-    {
-        a->Afiseaza(os);
-        os << "\n";
-    }
-}
+        f >> id >> nume >> pret;
 
-const Articol *Magazin::CautaArticol(const std::string &nume) const
-{
-    for (const auto &a : articole_)
-    {
-        if (a->GetNume() == nume)
-            return a.get();
-    }
-    return nullptr;
-}
+        if(tip == "Haina") {
 
-std::unique_ptr<Articol> Magazin::ExtrageArticol(const std::string &nume)
-{
-    for (auto it = articole_.begin(); it != articole_.end(); ++it)
-    {
-        if ((*it)->GetNume() == nume)
-        {
-            std::unique_ptr<Articol> rezultat = std::move(*it);
-            articole_.erase(it);
-            totalArticoleMagazin = articole_.size();
-            return rezultat;
+            articole.push_back(
+                std::make_shared<Haina>(id,nume,pret,"iarna")
+            );
+
         }
+
+        if(tip == "Pantalon") {
+
+            articole.push_back(
+                std::make_shared<Pantalon>(id,nume,pret,42)
+            );
+
+        }
+
+        if(tip == "Rochie") {
+
+            articole.push_back(
+                std::make_shared<Rochie>(id,nume,pret,"seara")
+            );
+
+        }
+
     }
-    return nullptr;
+
 }
-std::ostream& operator<<(std::ostream& os, const Magazin& m) {
-    m.Afiseaza(os); 
-    return os;
+
+void Magazin::afiseaza() const {
+
+    for(auto& a : articole)
+        a->afiseaza();
+
+}
+
+std::shared_ptr<Articol> Magazin::getArticol(int id) {
+
+    for(auto& a : articole)
+        if(a->getId() == id)
+            return a;
+
+    throw std::runtime_error("Articol inexistent");
+
 }
