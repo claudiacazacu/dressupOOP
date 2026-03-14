@@ -105,15 +105,14 @@ void SistemQuest::AdaugaQuest(std::shared_ptr<Quest> quest)
 
 void SistemQuest::ActualizeazaToateQuesturile(const Personaj& personaj)
 {
-    for (auto& quest : questuriActive_) {
-        quest->ActualizeazaProgres(personaj);
-        if (quest->EsteComplet()) {
+    for (auto it = questuriActive_.begin(); it != questuriActive_.end(); ) {
+        (*it)->ActualizeazaProgres(personaj);
+        if ((*it)->EsteComplet()) {
             // Mută în completate
-            questuriCompletate_.push_back(quest);
-            auto it = std::find(questuriActive_.begin(), questuriActive_.end(), quest);
-            if (it != questuriActive_.end()) {
-                questuriActive_.erase(it);
-            }
+            questuriCompletate_.push_back(*it);
+            it = questuriActive_.erase(it);
+        } else {
+            ++it;
         }
     }
 }

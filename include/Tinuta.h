@@ -11,7 +11,7 @@ private:
     std::vector<std::shared_ptr<Articol>> articole_;
 
 public:
-    Tinuta(const std::string& nume = "Tinuta Anonima");
+    explicit Tinuta(const std::string& nume = "Tinuta Anonima");
     Tinuta(const Tinuta& other);
     Tinuta& operator=(const Tinuta& other);
     ~Tinuta() = default;

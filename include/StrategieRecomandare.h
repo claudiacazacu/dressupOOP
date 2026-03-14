@@ -39,7 +39,7 @@ private:
     std::shared_ptr<StrategieRecomandare> strategie_;
 
 public:
-    RecomandatorTinute(std::shared_ptr<StrategieRecomandare> strategie = nullptr);
+    explicit RecomandatorTinute(std::shared_ptr<StrategieRecomandare> strategie = nullptr);
 
     void SetStrategie(std::shared_ptr<StrategieRecomandare> strategie);
     std::vector<Tinuta> GenereazaRecomandari(const Personaj& personaj, const std::string& eveniment) const;

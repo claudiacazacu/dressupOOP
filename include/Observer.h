@@ -33,7 +33,7 @@ private:
     std::string numePersonaj_;
 
 public:
-    PersonajObserver(const std::string& numePersonaj);
+    explicit PersonajObserver(const std::string& numePersonaj);
 
     void Update(const std::string& evenimentNou) override;
     std::string GetNume() const override;
@@ -46,7 +46,7 @@ private:
     std::string numeMagazin_;
 
 public:
-    MagazinObserver(const std::string& numeMagazin);
+    explicit MagazinObserver(const std::string& numeMagazin);
 
     void Update(const std::string& evenimentNou) override;
     std::string GetNume() const override;
