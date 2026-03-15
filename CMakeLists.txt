@@ -36,6 +36,7 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(${MAIN_EXECUTABLE_NAME}
     src/main.cpp
+    src/gui/Game.cpp
     src/Animal.cpp
     src/Articol.cpp
     src/ArticolDerivate.cpp
