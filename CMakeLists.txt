@@ -9,10 +9,30 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Adaugă calea către SFML
-set(SFML_DIR "C:/Users/claud/OneDrive/Desktop/claudia/SFML-3.0.2/lib/cmake/SFML")
-link_directories("C:/Users/claud/OneDrive/Desktop/claudia/SFML-3.0.2/lib")
-find_package(SFML 3.0 COMPONENTS Graphics Window System REQUIRED)
+# SFML: găsește o instalare locală sau descarcă-o automat (folosită în CI)
+find_package(SFML 2.6 COMPONENTS graphics window system QUIET)
+
+if(NOT SFML_FOUND)
+    include(FetchContent)
+    set(FETCHCONTENT_QUIET OFF)
+    set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+
+    FetchContent_Declare(
+        SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG        2.6.2
+        GIT_SHALLOW    1
+    )
+
+    FetchContent_MakeAvailable(SFML)
+
+    # FetchContent doesn't install SFMLConfig.cmake, but it provides SFML targets.
+    set(SFML_FOUND TRUE)
+endif()
+
+if(NOT TARGET sfml-graphics)
+    message(FATAL_ERROR "SFML targets not found; ensure SFML is installed or FetchContent succeeded.")
+endif()
 
 include(cmake/Options.cmake)
 include(cmake/CompilerFlags.cmake)
@@ -45,7 +65,7 @@ endif()
 
 target_include_directories(${MAIN_EXECUTABLE_NAME} PRIVATE include)
 
-target_link_libraries(${MAIN_EXECUTABLE_NAME} sfml-Graphics sfml-Window sfml-System)
+target_link_libraries(${MAIN_EXECUTABLE_NAME} PRIVATE sfml-graphics sfml-window sfml-system)
 
 set_target_properties(${MAIN_EXECUTABLE_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
