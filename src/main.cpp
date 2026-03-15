@@ -25,8 +25,6 @@
 #include "Tinuta.h"
 #include "TinutaBuilder.h"
 
-//#define RUN_CONSOLE_DEMO
-
 static int RuleazaDemoConsola()
 {
     try
@@ -282,9 +280,9 @@ static int RuleazaDemoConsola()
                     articolTest->SetRating(4.5);
                     articolTest->IncrementeazaPopularitate();
 
-                    std::cout << "Articol modificat - Raritate: " << articolTest->GetRaritate()
-                              << ", Rating: " << articolTest->GetRating()
-                              << ", Popularitate: " << articolTest->GetPopularitate() << "\n";
+                   /* std::cout << "Articol modificat - Raritate: " << articolTest->GetRaritate()
+                              << ", Rating: " << articolTest.GetRating()
+                              << ", Popularitate: " << articolTest.GetPopularitate() << "\n"; */
                 }
 
                 if (!player.GetSistemQuest().GetQuesturiActive().empty())
