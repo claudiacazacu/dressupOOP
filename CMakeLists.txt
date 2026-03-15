@@ -18,6 +18,13 @@ endif()
 
 include(FetchContent)
 
+# Build only the SFML modules actually needed by this project
+set(SFML_BUILD_AUDIO OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_NETWORK OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_DOC OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_TEST_SUITE OFF CACHE BOOL "" FORCE)
+
 FetchContent_Declare(
     SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
@@ -75,4 +82,9 @@ install(FILES tastatura.txt magazin.txt DESTINATION bin)
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/assets")
     install(DIRECTORY assets DESTINATION bin)
+endif()
+
+if(APPLE)
+    install(FILES launcher.command DESTINATION bin)
+    configure_file(launcher.command ${CMAKE_BINARY_DIR}/bin/launcher.command COPYONLY)
 endif()
