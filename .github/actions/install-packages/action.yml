@@ -24,7 +24,13 @@ runs:
           libxinerama-dev \
           libxcursor-dev \
           libxi-dev \
-          libudev-dev
+          libxxf86vm-dev \
+          libopenal-dev \
+          libudev-dev \
+          libfreetype6-dev \
+          libjpeg-dev \
+          libvorbis-dev \
+          libflac-dev
 
         # https://github.com/llvm/llvm-project/issues/78354
         sudo sysctl vm.mmap_rnd_bits=28
