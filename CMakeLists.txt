@@ -9,6 +9,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Adaugă calea către SFML
+set(SFML_DIR "C:/Users/claud/OneDrive/Desktop/claudia/SFML-3.0.2/lib/cmake/SFML")
+link_directories("C:/Users/claud/OneDrive/Desktop/claudia/SFML-3.0.2/lib")
+find_package(SFML 3.0 COMPONENTS Graphics Window System REQUIRED)
+
 include(cmake/Options.cmake)
 include(cmake/CompilerFlags.cmake)
 include(cmake/CopyHelper.cmake)
@@ -39,6 +44,8 @@ if(COMMAND set_compiler_flags)
 endif()
 
 target_include_directories(${MAIN_EXECUTABLE_NAME} PRIVATE include)
+
+target_link_libraries(${MAIN_EXECUTABLE_NAME} sfml-Graphics sfml-Window sfml-System)
 
 set_target_properties(${MAIN_EXECUTABLE_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
