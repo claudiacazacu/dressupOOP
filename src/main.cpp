@@ -1,4 +1,6 @@
+#if !defined(__linux__)
 #include "gui/Game.h"
+#endif
 
 #include <fstream>
 #include <functional>
@@ -233,8 +235,7 @@ static int RuleazaDemoConsola()
                 if (builder.EsteValida())
                 {
                     Tinuta tinutaNoua = builder.Build();
-                    std::cout << "Tinuta construita cu succes:\n"
-                              << tinutaNoua << "\n";
+                    std::cout << "Tinuta construita cu succes:\n" << tinutaNoua << "\n";
                 }
                 else
                 {
@@ -274,15 +275,15 @@ static int RuleazaDemoConsola()
                 if (!player.GetDulap().GetArticole().empty())
                 {
                     auto it = player.GetDulap().GetArticole().begin();
-                    std::shared_ptr<Articol> articolTest = std::shared_ptr<Articol>((*it)->clone().release());
+                    std::shared_ptr<Articol> articolTest((*it)->clone().release());
 
                     articolTest->SetRaritate("Epic");
                     articolTest->SetRating(4.5);
                     articolTest->IncrementeazaPopularitate();
 
-                   /* std::cout << "Articol modificat - Raritate: " << articolTest->GetRaritate()
-                              << ", Rating: " << articolTest.GetRating()
-                              << ", Popularitate: " << articolTest.GetPopularitate() << "\n"; */
+                    std::cout << "Articol modificat - Raritate: " << articolTest->GetRaritate()
+                              << ", Rating: " << articolTest->GetRating()
+                              << ", Popularitate: " << articolTest->GetPopularitate() << "\n";
                 }
 
                 if (!player.GetSistemQuest().GetQuesturiActive().empty())
@@ -305,8 +306,7 @@ static int RuleazaDemoConsola()
                 std::cout << "Observer detasat\n";
 
                 Tinuta ceaMaiBuna = player.CeaMaiBunaTinuta(session.GetEvenimentCurent(), "eleganta");
-                std::cout << "Cea mai buna tinuta dupa eleganta:\n"
-                          << ceaMaiBuna << "\n";
+                std::cout << "Cea mai buna tinuta dupa eleganta:\n" << ceaMaiBuna << "\n";
 
                 session.Attach(personajObserver);
                 std::cout << "Observer reatasat\n";
@@ -396,16 +396,18 @@ static int RuleazaDemoConsola()
     return 0;
 }
 
+#if !defined(__linux__)
 static int RuleazaAplicatiaSFML()
 {
     Game game;
     game.run();
     return 0;
 }
+#endif
 
 int main()
 {
-#ifdef RUN_CONSOLE_DEMO
+#if defined(__linux__)
     return RuleazaDemoConsola();
 #else
     return RuleazaAplicatiaSFML();
