@@ -15,6 +15,7 @@ runs:
         # Required for SFML/OpenGL development on Ubuntu
         sudo apt-get install -y \
           libgl1-mesa-dev \
+          mesa-common-dev \
           libglu1-mesa-dev \
           libglvnd-dev \
           libegl1-mesa-dev \
