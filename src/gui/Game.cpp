@@ -4,10 +4,9 @@
 Game::Game() : hasFont(false) {
     window.create(sf::VideoMode(800, 600), "DressUp Game");
 
-    // Try to load font from assets, then system
-    if (font.loadFromFile("assets/fonts/arial.ttf")) {
+    if (font.loadFromFile("assets/fonts/angelica.ttf")) {
         hasFont = true;
-    } else if (font.loadFromFile("C:/Windows/Fonts/arial.ttf")) {
+    } else if (font.loadFromFile("C:/Windows/Fonts/darling.ttf")) {
         hasFont = true;
     } else {
         std::cout << "Warning: Could not load font, text will not be displayed.\n";
