@@ -2,6 +2,7 @@
 #include "gui/Game.h"
 #endif
 
+#include <cstdlib>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -407,6 +408,11 @@ static int RuleazaAplicatiaSFML()
 
 int main()
 {
+    if (std::getenv("GITHUB_ACTIONS") != nullptr)
+    {
+        return RuleazaDemoConsola();
+    }
+
 #if defined(__linux__)
     return RuleazaDemoConsola();
 #else
