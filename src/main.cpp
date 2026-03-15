@@ -1,12 +1,12 @@
 #include "gui/Game.h"
-/*
+
+#include <fstream>
+#include <functional>
 #include <iostream>
 #include <list>
 #include <memory>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <functional>
 
 #include "Animal.h"
 #include "Articol.h"
@@ -24,10 +24,11 @@
 #include "TemplateUtils.h"
 #include "Tinuta.h"
 #include "TinutaBuilder.h"
-*/
-int main() {
 
-    /*
+//#define RUN_CONSOLE_DEMO
+
+static int RuleazaDemoConsola()
+{
     try
     {
         std::ifstream fin("tastatura.txt");
@@ -165,7 +166,8 @@ int main() {
             {
                 std::cout << "Testare functionalitati Tinuta:\n";
 
-                if (!player.GetDulap().GetArticole().empty()) {
+                if (!player.GetDulap().GetArticole().empty())
+                {
                     auto it = player.GetDulap().GetArticole().begin();
                     tinutaTest.AdaugaArticol(std::shared_ptr<Articol>((*it)->clone().release()));
                     std::cout << "Adaugat articol la tinuta\n";
@@ -173,9 +175,11 @@ int main() {
 
                 std::cout << tinutaTest << "\n";
 
-                if (!tinutaTest.GetArticole().empty()) {
+                if (!tinutaTest.GetArticole().empty())
+                {
                     std::string numePrimul = tinutaTest.GetArticole()[0]->GetNume();
-                    if (tinutaTest.EliminaArticol(numePrimul)) {
+                    if (tinutaTest.EliminaArticol(numePrimul))
+                    {
                         std::cout << "Eliminat articolul: " << numePrimul << "\n";
                     }
                 }
@@ -193,9 +197,12 @@ int main() {
                 builder.SetNume("Tinuta Custom");
                 std::cout << "Setat nume: Tinuta Custom\n";
 
-                if (!player.GetDulap().GetArticole().empty()) {
-                    for (const auto& articol : player.GetDulap().GetArticole()) {
-                        if (dynamic_cast<const Imbracaminte*>(articol.get())) {
+                if (!player.GetDulap().GetArticole().empty())
+                {
+                    for (const auto &articol : player.GetDulap().GetArticole())
+                    {
+                        if (dynamic_cast<const Imbracaminte *>(articol.get()))
+                        {
                             builder.AdaugaImbracaminte(std::shared_ptr<Articol>(articol->clone().release()));
                             std::cout << "Adaugat imbracaminte\n";
                             break;
@@ -203,16 +210,20 @@ int main() {
                     }
                 }
 
-                for (const auto& articol : shop.GetArticole()) {
-                    if (dynamic_cast<const Incaltaminte*>(articol.get())) {
+                for (const auto &articol : shop.GetArticole())
+                {
+                    if (dynamic_cast<const Incaltaminte *>(articol.get()))
+                    {
                         builder.AdaugaIncaltaminte(std::shared_ptr<Articol>(articol->clone().release()));
                         std::cout << "Adaugat incaltaminte\n";
                         break;
                     }
                 }
 
-                for (const auto& articol : shop.GetArticole()) {
-                    if (dynamic_cast<const Accesoriu*>(articol.get())) {
+                for (const auto &articol : shop.GetArticole())
+                {
+                    if (dynamic_cast<const Accesoriu *>(articol.get()))
+                    {
                         builder.AdaugaAccesoriu(std::shared_ptr<Articol>(articol->clone().release()));
                         std::cout << "Adaugat accesoriu\n";
                         break;
@@ -221,10 +232,14 @@ int main() {
 
                 builder.AfiseazaStare(std::cout);
 
-                if (builder.EsteValida()) {
+                if (builder.EsteValida())
+                {
                     Tinuta tinutaNoua = builder.Build();
-                    std::cout << "Tinuta construita cu succes:\n" << tinutaNoua << "\n";
-                } else {
+                    std::cout << "Tinuta construita cu succes:\n"
+                              << tinutaNoua << "\n";
+                }
+                else
+                {
                     std::cout << "Tinuta nu este valida\n";
                 }
             }
@@ -258,7 +273,8 @@ int main() {
             {
                 std::cout << "Testare toate functiile nefolosite anterior:\n";
 
-                if (!player.GetDulap().GetArticole().empty()) {
+                if (!player.GetDulap().GetArticole().empty())
+                {
                     auto it = player.GetDulap().GetArticole().begin();
                     std::shared_ptr<Articol> articolTest = std::shared_ptr<Articol>((*it)->clone().release());
 
@@ -271,7 +287,8 @@ int main() {
                               << ", Popularitate: " << articolTest->GetPopularitate() << "\n";
                 }
 
-                if (!player.GetSistemQuest().GetQuesturiActive().empty()) {
+                if (!player.GetSistemQuest().GetQuesturiActive().empty())
+                {
                     auto quest = player.GetSistemQuest().GetQuesturiActive()[0];
                     std::cout << "Quest info - Descriere: " << quest->GetDescriere()
                               << ", Tip: " << static_cast<int>(quest->GetTip())
@@ -290,7 +307,8 @@ int main() {
                 std::cout << "Observer detasat\n";
 
                 Tinuta ceaMaiBuna = player.CeaMaiBunaTinuta(session.GetEvenimentCurent(), "eleganta");
-                std::cout << "Cea mai buna tinuta dupa eleganta:\n" << ceaMaiBuna << "\n";
+                std::cout << "Cea mai buna tinuta dupa eleganta:\n"
+                          << ceaMaiBuna << "\n";
 
                 session.Attach(personajObserver);
                 std::cout << "Observer reatasat\n";
@@ -377,9 +395,21 @@ int main() {
         return 1;
     }
 
-    */
+    return 0;
+}
 
+static int RuleazaAplicatiaSFML()
+{
     Game game;
     game.run();
     return 0;
+}
+
+int main()
+{
+#ifdef RUN_CONSOLE_DEMO
+    return RuleazaDemoConsola();
+#else
+    return RuleazaAplicatiaSFML();
+#endif
 }
